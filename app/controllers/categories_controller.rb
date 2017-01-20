@@ -74,7 +74,6 @@ class CategoriesController < ApplicationController
     def current_member
       if cookies[:member_id] != ""
         @current_member = Member.find(cookies[:member_id])
-        puts @current_member.is_lead
       end
     end
 
