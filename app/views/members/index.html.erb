@@ -24,7 +24,11 @@
       <label for="manager">Manager</label> 
       <%= collection_select(nil, :manager, @managers, :manager, :manager, selected: @manager, include_blank: true) %></p>
     </div> 
-  </div>
+    <!--div class="field">
+      <label for="member">With Subscriptions</label> 
+      <%= check_box_tag :has_subscribed, 1, params[:has_subscribed] %>
+    </div--> 
+   </div>
 </div>
   <%= submit_tag "Search" %>
   <%= link_to 'Clear', members_path %>

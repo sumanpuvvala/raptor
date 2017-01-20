@@ -1,20 +1,21 @@
 class TeamsController < ApplicationController
   before_action :set_team, only: [:show, :edit, :update, :destroy]
+  before_action :current_member, only: [:show, :edit]
 
   layout 'standard'
 
   # GET /teams
   # GET /teams.json
   def index
-    @teams = Team.all.order(:name)
+    @teams = Team.all.order(:name).includes(:member)
   end
 
   # GET /teams/1
   # GET /teams/1.json
   def show
 #    @teams = Team.find(params[:id])
-    @teammembers = Teammember.where(team_id: params[:id]).order(:team_id)
-    @topics = Topic.where(team_id: params[:id]).order(:name)
+    @teammembers = Teammember.where(team_id: params[:id]).order(:team_id).includes(:member)
+    @topics = Topic.where(team_id: params[:id]).order(:name).includes(:category, :classification)
   end
 
   # GET /teams/new
@@ -72,6 +73,13 @@ class TeamsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_team
       @team = Team.find(params[:id])
+    end
+
+    def current_member
+      if cookies[:member_id] != ""
+        @current_member = Member.find(cookies[:member_id])
+        puts @current_member.is_lead
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

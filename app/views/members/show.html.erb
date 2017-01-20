@@ -23,11 +23,19 @@
 </p>
 
 <%= link_to 'Back', members_path %>
-<%= link_to 'Edit', edit_member_path(@member) %> 
-<%= link_to 'Join Team', new_teammember_path(:member_id => @member.id) %>
-<%= link_to 'Suggest Course', new_course_path(:member_id => @member.id) %>
-<%= link_to 'Bookmark Topic', new_interest_path(:member_id => @member.id) %>
-<%= link_to 'Start Course', new_subscription_path(:member_id => @member.id) %>
+<% if cookies[:member_id].to_s == @member.id.to_s or (@current_member != nil and @current_member.is_lead)%>
+  <%= link_to 'Edit', edit_member_path(@member) %> 
+  <%= link_to 'Join Team', new_teammember_path(:member_id => @member.id) %>
+  <%= link_to 'Suggest Course', new_course_path(:member_id => @member.id) %>
+  <%= link_to 'Bookmark Topic', new_interest_path(:member_id => @member.id) %>
+  <%= link_to 'Start Course', new_subscription_path(:member_id => @member.id) %>
+<% end %>
+<% if cookies[:member_id].to_s == @member.id.to_s %> 
+  <%= link_to 'Forget Me', unmark_member_path(@member), :class => "btn-red" %>
+<% end %> 
+<% if cookies[:member_id] == "" %> 
+  <%= link_to 'This is Me', mark_member_path(@member), :class => "btn-blue" %>
+<% end %>
 
 <h2>Subscriptions (<%= @completed_credits %> / <%= @total_credits %> credits)</h2>
 <table>
@@ -50,8 +58,10 @@
         <td><%= subscription.status %></td>
         <td><%= subscription.rating %></td>
         <td><description><%= subscription.comment %></description></td>
-        <td><%= link_to 'Edit', edit_subscription_path(subscription) %></td>
-        <td><%= button_to 'Remove', {:controller => :subscriptions, action: :destroy, id: subscription.id}, onclick: 'return confirm("Are you sure?")', :method => :delete%></td>
+        <% if cookies[:member_id].to_s == @member.id.to_s or (@current_member != nil and @current_member.is_lead) %>
+          <td><%= link_to 'Edit', edit_subscription_path(subscription) %></td> 
+          <td><%= button_to 'Remove', {:controller => :subscriptions, action: :destroy, id: subscription.id}, onclick: 'return confirm("Are you sure?")', :method => :delete%></td> 
+        <% end %>
       </tr>
     <% end %>
   </tbody>
@@ -66,6 +76,11 @@
   </thead>
 
   <tbody>
+    <% @teams.each do |team| %>
+      <tr>
+        <td><%= link_to team.name, team_path(team) %> (Lead)</td>
+      </tr>
+    <% end %>
     <% @teammembers.each do |teammember| %>
       <tr>
         <td><%= link_to teammember.team.name, team_path(teammember.team) %></td>
@@ -112,7 +127,9 @@
     <% @interests.each do |interest| %>
       <tr>
         <td><%= link_to interest.topic.name, interest.topic %></td> 
-        <td><%= button_to 'Remove', {:controller => :interests, action: :destroy, id: interest.id},  onclick: 'return confirm("Are you sure?")', :method => :delete%></td>
+        <% if cookies[:member_id].to_s == @member.id.to_s or (@current_member != nil and @current_member.is_lead) %>
+          <td><%= button_to 'Remove', {:controller => :interests, action: :destroy, id: interest.id},  onclick: 'return confirm("Are you sure?")', :method => :delete%></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

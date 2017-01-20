@@ -1,7 +1,9 @@
 <p id="notice"><%= notice %></p>
 
 <h2>Categories</h2>
+<% if @current_member != nil and @current_member.is_lead %>
 <%= link_to 'Add Category', new_category_path %>
+<% end %>
 
 <table>
   <thead>

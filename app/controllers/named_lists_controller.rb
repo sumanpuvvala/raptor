@@ -1,5 +1,6 @@
 class NamedListsController < ApplicationController
   before_action :set_named_list, only: [:show, :edit, :update, :destroy]
+  before_action :current_member, only: [:index]
 
   layout 'standard'
 
@@ -73,6 +74,13 @@ class NamedListsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_named_list
       @named_list = NamedList.find(params[:id])
+    end
+
+    def current_member
+      if cookies[:member_id] != ""
+        @current_member = Member.find(cookies[:member_id])
+        puts @current_member.is_lead
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

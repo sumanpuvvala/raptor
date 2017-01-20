@@ -1,5 +1,8 @@
 <h2>Editing Team</h2>
 
 <%= render 'form', team: @team %>
+<% if @current_member != nil and @current_member.is_lead %>
+<%= button_to 'Remove', {:controller => :teams, action: :destroy, id: @team.id}, {onclick: 'return confirm("Are you sure?")', class: 'btn-red', :method => :delete}%>
+<% end %>
 <br>
 <%= link_to 'Back', team_path %>
