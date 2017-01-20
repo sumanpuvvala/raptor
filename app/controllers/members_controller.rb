@@ -1,5 +1,6 @@
 class MembersController < ApplicationController
-  before_action :set_member, only: [:show, :edit, :update, :destroy]
+  before_action :set_member, only: [:show, :edit, :update, :destroy, :mark, :unmark]
+  before_action :current_member, only: [:show, :edit, :new, :maintenance]
 
   layout 'standard'
 
@@ -20,6 +21,7 @@ class MembersController < ApplicationController
     @members = @members.stream(@stream) if params[:stream].present?
     @members = @members.title(@title) if params[:title].present?
     @members = @members.manager(@manager) if params[:manager].present?
+#    @members = @members.has_subscribed() if params[:has_subscribed].present?
     @members = @members.order(:name)
 
     @subscriptions = Subscription.subscription()
@@ -33,15 +35,13 @@ class MembersController < ApplicationController
       m.credits_earned = @completed_subscriptions[m.id]
     end
 
-#    cookies[:member_name] = 'Suman'
-#    cookies[:member_id] = 218
-
   end
 
   # GET /members/1
   # GET /members/1.json
   def show
     @teammembers = Teammember.where(member_id: params[:id]).includes(:team)
+    @teams = Team.where(member_id: params[:id])
     @courses = Course.where(member_id: params[:id]).includes(:topic).order(:title)
     @interests = Interest.where(member_id: params[:id])
     @subscriptions = Subscription.where(member_id: params[:id]).includes(:course)
@@ -49,6 +49,23 @@ class MembersController < ApplicationController
     @total_credits = @subscriptions.joins(:course).sum(:credits)
     @completed_credits = @subscriptions.completion().joins(:course).sum(:credits)
 
+  end
+
+  def mark
+
+    cookies[:member_name] = @member.name
+    cookies[:member_id] = @member.id
+    puts cookies[:member_id]
+
+    redirect_to @member
+  end
+
+  def unmark
+
+    cookies[:member_name] = nil
+    cookies[:member_id] = nil
+
+    redirect_to @member
   end
 
   # GET /members/new
@@ -105,10 +122,20 @@ class MembersController < ApplicationController
     end
   end
 
+  def maintenance
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_member
       @member = Member.find(params[:id])
+    end
+
+    def current_member
+      if cookies[:member_id] != ""
+        @current_member = Member.find(cookies[:member_id])
+        puts @current_member.is_lead
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

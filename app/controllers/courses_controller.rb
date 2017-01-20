@@ -1,5 +1,6 @@
 class CoursesController < ApplicationController
   before_action :set_course, only: [:show, :edit, :update, :destroy, :copy]
+  before_action :current_member, only: [:show, :new, :edit]
 
   layout 'standard'
   
@@ -24,6 +25,7 @@ class CoursesController < ApplicationController
     @courses = @courses.contributor(@member_id) if params[:member_id].present?
     @courses = @courses.difficulty(@difficulty) if params[:difficulty].present?
     @courses = @courses.course_type(@course_type) if params[:course_type].present?
+    @courses = @courses.paid() if params[:is_paid].present?
     @courses = @courses.includes(:topic, :member).order(:title)
 
     @subscriptions = Subscription.completion().group(:course_id).average(:rating)
@@ -42,14 +44,21 @@ class CoursesController < ApplicationController
     if @average == nil
       @average = 0.0
     end
-    
+     @subscriptions.each do |s| 
+      if s.member_id == @current_member.id
+        @current_member.credits = s.course.credits
+        break
+      end
+    end
+   
   end
 
   # GET /courses/new
   def new
     @course = Course.new
-    @course.topic_id = params[:topic_id]
-    @course.member_id = params[:member_id]
+    @course.topic_id = params[:topic_id] if params[:topic_id].present?
+    @course.member_id = params[:member_id] if params[:member_id].present?
+    @course.member_id = @current_member.id if @current_member.present?
 
     @topics = Topic.all.order(:name)
     @difficulties = NamedList.where(list_name: 'difficulty').select(:entry_name).order(:entry_name)
@@ -133,6 +142,13 @@ class CoursesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_course
       @course = Course.find(params[:id])
+    end
+
+    def current_member
+      if cookies[:member_id] != ""
+        @current_member = Member.find(cookies[:member_id])
+        puts @current_member.is_lead
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

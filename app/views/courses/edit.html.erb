@@ -1,5 +1,8 @@
 <h2>Editing Course</h2>
 
 <%= render 'form', course: @course %>
+<% if @current_member != nil and @current_member.is_lead %>
+<%= button_to 'Remove', {:controller => :courses, action: :destroy, id: @course.id}, {onclick: 'return confirm("Are you sure?")', class: 'btn-red', :method => :delete}%>
+<% end %>
 <br>
 <%= link_to 'Back', course_path %>

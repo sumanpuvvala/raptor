@@ -24,8 +24,13 @@ class InterestsController < ApplicationController
       @topic = Topic.find(@interest.topic_id)
     end
 
-    if params[:member_id] != nil
-      @interest.member_id = params[:member_id] 
+    if cookies[:member_id] != ""
+      @interest.member_id = cookies[:member_id]
+    else
+      @interest.member_id = params[:member_id]
+    end
+
+    if @interest.member_id != nil
       @topics = Topic.all.order(:name) 
       @member = Member.find(@interest.member_id) 
     end
