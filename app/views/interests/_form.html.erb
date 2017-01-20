@@ -17,10 +17,10 @@
       <%= f.hidden_field :topic_id %>
       <%= @topic.name %>
     </div>
-  <% else %>
+
     <div class="field">
-      <%= f.label :topic_id %>
-      <%= f.collection_select(:topic_id, @topics, :id, :name, required: true) %>
+      <%= f.label :member_id %>
+      <%= f.collection_select(:member_id, @members, :id, :name, required: true) %>
     </div>
   <% end %>
 
@@ -30,10 +30,10 @@
       <%= f.hidden_field :member_id %>
       <%= @member.name %>
     </div>
-  <% else %>
+
     <div class="field">
-      <%= f.label :member_id %>
-      <%= f.collection_select(:member_id, @members, :id, :name, required: true) %>
+      <%= f.label :topic_id %>
+      <%= f.collection_select(:topic_id, @topics, :id, :name, required: true) %>
     </div>
   <% end %>
 

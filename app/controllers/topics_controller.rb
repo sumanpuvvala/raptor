@@ -1,5 +1,4 @@
 class TopicsController < ApplicationController
-  before_action :current_member, only: [:edit]
 
 layout 'standard'
 
@@ -95,7 +94,7 @@ layout 'standard'
   def destroy
     @topic.destroy!
     respond_to do |format|
-      format.html { redirect_to topics_url, notice: 'Topic was successfully deleted.' }
+      format.html { redirect_to topics_url, notice: 'Topic was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -104,13 +103,6 @@ layout 'standard'
     # Use callbacks to share common setup or constraints between actions.
     def set_topic
       @topic = Topic.find(params[:id])
-    end
-
-    def current_member
-      if cookies[:member_id] != ""
-        @current_member = Member.find(cookies[:member_id])
-        puts @current_member.is_lead
-      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

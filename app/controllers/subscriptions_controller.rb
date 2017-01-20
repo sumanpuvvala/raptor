@@ -40,18 +40,12 @@ class SubscriptionsController < ApplicationController
       @courses = Course.all.order(:title) 
     end
 
-    if cookies[:member_id] != ""
-      @subscription.member_id = cookies[:member_id] 
-    else
+    if params[:member_id] != nil
       @subscription.member_id = params[:member_id] 
-    end
-
-    if @subscription.member_id != nil
       @member = Member.find(@subscription.member_id) 
     else
       @members = Member.all.order(:name) 
     end
-    
     @statuses = NamedList.where(list_name: 'status').select(:entry_name).order(:entry_name)
   end
 
@@ -112,5 +106,4 @@ class SubscriptionsController < ApplicationController
     def subscription_params
       params.require(:subscription).permit(:course_id, :member_id, :status, :rating, :comment)
     end
-
 end

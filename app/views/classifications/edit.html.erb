@@ -1,8 +1,5 @@
 <h2>Editing Classification</h2>
 
 <%= render 'form', classification: @classification %>
-<% if @current_member != nil and @current_member.is_lead %>
-<%= button_to 'Remove', {:controller => :classifications, action: :destroy, id: @classification.id}, {onclick: 'return confirm("Are you sure?")', class: 'btn-red', :method => :delete}%>
-<% end %>
 <br>
 <%= link_to 'Back', @classification %>

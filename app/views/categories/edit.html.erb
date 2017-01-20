@@ -1,8 +1,5 @@
 <h2>Editing Category</h2>
 
 <%= render 'form', category: @category %>
-<% if @current_member != nil and @current_member.is_lead %>
-<%= button_to 'Remove', {:controller => :categories, action: :destroy, id: @category.id}, {onclick: 'return confirm("Are you sure?")', class: 'btn-red', :method => :delete}%>
-<% end %>
 <br>
 <%= link_to 'Back', category_path %>
