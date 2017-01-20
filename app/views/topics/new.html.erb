@@ -1,0 +1,13 @@
+<h2>New Topic</h2>
+
+<%= render 'form', topic: @topic %>
+<br>
+<% if @topic.team_id != nil %> 
+	<%= link_to 'Back', team_path(:id => @topic.team_id) %>
+<% elsif @topic.category_id != nil %> 
+	<%= link_to 'Back', category_path(:id => @topic.category_id) %>
+<% elsif @topic.classification_id != nil %> 
+	<%= link_to 'Back', classification_path(:id => @topic.classification_id) %>
+<% else %> 
+	<%= link_to 'Back', topics_path %>
+<% end %>

@@ -1,0 +1,1 @@
+json.array! @named_lists, partial: 'named_lists/named_list', as: :named_list

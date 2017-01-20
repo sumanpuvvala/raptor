@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<h2>Interests</h2>
+
+<%= link_to 'New Interest', new_interest_path %>
+<table>
+  <thead>
+    <tr>
+      <th>Topic</th>
+      <th>Member</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @interests.each do |interest| %>
+      <tr>
+        <td><%= link_to interest.topic.name, interest.topic %></td>
+        <td><%= link_to interest.member.name, interest.member %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

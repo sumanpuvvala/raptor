@@ -1,0 +1,66 @@
+<p id="notice"><%= notice %></p>
+
+<h2>Members</h2>
+
+<%= form_tag members_path, :method => 'get' do %>
+
+<div style="width: 100%; float:left">
+  <div style="width: 50%; float:left">
+    <div class="field">
+      <label for="name">Name</label> 
+      <%= text_field nil, :member_name, {value: @member_name, placeholder: "search with wildcard"} %></p>
+    </div> 
+    <div class="field">
+      <label for="stream">Title</label> 
+      <%= collection_select(nil, :title, @titles, :title, :title, selected: @title, include_blank: true) %></p>
+    </div> 
+  </div>
+  <div style="width: 50%; float:right">
+    <div class="field">
+      <label for="stream">Stream</label> 
+      <%= collection_select(nil, :stream, @streams, :entry_name, :entry_name, selected: @stream, include_blank: true) %></p>
+    </div> 
+    <div class="field">
+      <label for="manager">Manager</label> 
+      <%= collection_select(nil, :manager, @managers, :manager, :manager, selected: @manager, include_blank: true) %></p>
+    </div> 
+    <!--div class="field">
+      <label for="member">With Subscriptions</label> 
+      <%= check_box_tag :has_subscribed, 1, params[:has_subscribed] %>
+    </div--> 
+   </div>
+</div>
+  <%= submit_tag "Search" %>
+  <%= link_to 'Clear', members_path %>
+  <%= link_to 'Add Member', new_member_path %>
+<% end %> 
+
+<p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Title</th>
+      <th>Stream</th>
+      <th>Manager</th>
+      <th>Credits</th>
+      <th>Credits Earned</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @members.each do |member| %>
+      <tr>
+        <td><%= link_to member.name, member_path(member) %> <% if (member.is_lead?) %> (Lead) <% end %> </td>
+        <td><%= member.title %></td>
+        <td><%= member.stream %></td>
+        <td><%= member.manager %></td>
+        <td><%= member.credits %></td>
+        <td><%= member.credits_earned %></td>
+        <td>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

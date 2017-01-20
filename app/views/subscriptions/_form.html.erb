@@ -1,0 +1,58 @@
+<%= form_for(subscription) do |f| %>
+  <% if subscription.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(subscription.errors.count, "error") %> prohibited this subscription from being saved:</h2>
+
+      <ul>
+      <% subscription.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @member != nil %>
+    <div class="field">
+      <%= f.label :member_id %>
+      <%= f.hidden_field :member_id %>
+      <%= @member.name %>
+    </div>
+  <% else %>
+    <div class="field">
+      <%= f.label :member_id %>
+      <%= f.collection_select(:member_id, @members, :id, :name, {prompt: true}, required: true) %>
+    </div>
+  <% end %>
+
+  <% if @course != nil %>
+    <div class="field">
+      <%= f.label :course_id %>
+      <%= f.hidden_field :course_id %>
+      <%= @course.title %>
+    </div>
+  <% else %>
+    <div class="field">
+      <%= f.label :course_id %>
+      <%= f.collection_select(:course_id, @courses, :id, :title, {prompt: true}, required: true) %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :status %>
+      <%= f.collection_select(:status, @statuses, :entry_name, :entry_name, {selected: subscription.status, prompt: true}) %></p>
+  </div>
+
+  <div class="field">
+    <%= f.label :rating %>
+    <%= f.select :rating, (1..5), prompt: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :comment %>
+    <%= f.text_area :comment %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

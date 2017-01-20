@@ -1,0 +1,77 @@
+<%= form_for(course) do |f| %>
+  <% if course.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(course.errors.count, "error") %> prohibited this course from being saved:</h2>
+
+      <ul>
+      <% @course.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title, :required => true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :details %>
+    <%= f.text_area :details %>
+  </div>
+
+  <div class="field">
+    <%= f.label :topic_id %>
+    <%= f.collection_select(:topic_id, @topics, :id, :name, {:include_blank => true}, {:required => true, selected: course.topic_id}) %></p>
+  </div>
+
+  <div class="field">
+    <%= f.label :course_type %>
+    <%= f.collection_select(:course_type, @course_types, :entry_name, :entry_name, {:include_blank => true}, {selected: course.course_type}) %></p>
+  </div>
+
+  <div class="field">
+    <%= f.label :time_estimate %>
+    <%= f.text_field :time_estimate %>
+  </div>
+
+  <div class="field">
+    <%= f.label :difficulty %>
+    <%= f.collection_select(:difficulty, @difficulties, :entry_name, :entry_name, {:include_blank => true}, {selected: course.difficulty}) %></p>
+  </div>
+
+  <div class="field">
+    <%= f.label :cost_course %>
+    <%= f.text_field :cost_course %>
+  </div>
+
+  <div class="field">
+    <%= f.label :cost_certification %>
+    <%= f.text_field :cost_certification %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Contributor %>
+    <%= f.collection_select(:member_id, @members, :id, :name, {:include_blank => true}, {:required => true, selected: course.member_id}) %></p>
+  </div>
+
+  <div class="field">
+    <%= f.label :credits %>
+    <%= f.number_field :credits, :step => 0.5 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :university %>
+    <%= f.text_field :university %>
+  </div>
+
+  <div class="field">
+    <%= f.label :url %>
+    <%= f.url_field :url %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

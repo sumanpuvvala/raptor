@@ -1,0 +1,9 @@
+<h2>New Interest</h2>
+
+<%= render 'form', interest: @interest %>
+<br>
+<% if @interest.member != nil %>
+  <%= link_to 'Back', member_path(@interest.member) %>
+<% else %>
+  <%= link_to 'Back', topic_path(@interest.topic) %>
+<% end %>

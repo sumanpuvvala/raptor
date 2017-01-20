@@ -1,0 +1,75 @@
+<p id="notice"><%= notice %></p>
+
+<h2>Courses</h2>
+
+<p>
+<%= form_tag courses_path, :method => 'get' do %>
+
+<div style="width: 100%; float:left">
+  <div style="width: 50%; float:left">
+    <div class="field">
+      <label for="name">Course</label> 
+      <%= text_field nil, :course_name, {value: @course_name, placeholder: "search with wildcard"} %></p>
+    </div> 
+    <div class="field">
+      <label for="topic_id">Topic</label> 
+      <%= collection_select(nil, :topic_id, @topics, :id, :name, selected: @topic_id, include_blank: true) %></p>
+    </div> 
+    <div class="field">
+      <label for="difficulty">Difficulty</label> 
+      <%= collection_select(nil, :difficulty, @difficulties, :entry_name, :entry_name, selected: @difficulty, include_blank: true) %></p>
+    </div> 
+  </div>
+  <div style="width: 50%; float:right">
+    <div class="field">
+      <label for="course_type">Course Type</label> 
+      <%= collection_select(nil, :course_type, @course_types, :entry_name, :entry_name, selected: @course_type, include_blank: true) %></p>
+    </div> 
+    <div class="field">
+      <label for="member">Contributor</label> 
+      <%= collection_select(nil, :member_id, @members, :id, :name, selected: @member_id, include_blank: true) %></p>
+    </div> 
+    <div class="field">
+      <label for="member">Paid courses</label> 
+      <%= check_box_tag :is_paid, 1, params[:is_paid] %>
+    </div> 
+  </div>
+</div>
+  <%= submit_tag "Search" %>
+  <%= link_to 'Clear', courses_path %>
+  <%= link_to 'Add Course', new_course_path %>
+<% end %> 
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Topic</th>
+      <th>University</th>
+      <th>Course type</th>
+      <!--th>Difficulty</th-->
+      <th>Cost</th>
+      <th>Credits</th>
+      <th>Avg Rating</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @courses.each do |course| %>
+      <tr>
+        <td><%= link_to course.title, course %></td>
+        <td><% if course.topic != nil %> 
+          <%= course.topic.name %> 
+        <% end %></td>
+        <td><%= course.university %></td>
+        <td><%= course.course_type %></td>
+        <!--td><%= course.difficulty %></td-->
+        <td><%= course.cost_course %></td>
+        <td><%= course.credits %></td>
+        <td><% if course.rating != nil %> 
+          <div class="star-ratings-sprite"><span style="width:<%= course.rating * 20%>%" class="star-ratings-sprite-rating"></span></div>
+        <% end %></td> 
+      </tr>
+    <% end %>
+  </tbody>
+</table>

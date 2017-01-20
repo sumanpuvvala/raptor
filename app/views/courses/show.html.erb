@@ -1,0 +1,131 @@
+<p id="notice"><%= notice %></p>
+
+<h2>
+  Course: <%= @course.title %>
+</h2>
+
+<div style="width: 100%; float:left">
+<div style="width: 50%; float:left">
+  <p>
+    <strong>Topic:</strong>
+    <%= link_to @course.topic.name, topic_path(@course.topic) %>
+  </p>
+
+  <p>
+    <strong>Course type:</strong>
+    <%= @course.course_type %>
+  </p>
+
+  <p>
+    <strong>Time estimate:</strong>
+    <%= @course.time_estimate %>
+  </p>
+
+  <p>
+    <strong>Difficulty:</strong>
+    <%= @course.difficulty %>
+  </p>
+
+  <p>
+    <strong>Contributor:</strong>
+    <%= link_to @course.member.name, @course.member %>
+  </p>
+
+</div>
+<div style="width: 50%; float:right">
+  <p>
+    <strong>Cost of course:</strong>
+    <font color="red"><%= @course.cost_course %></font>
+   </p>
+
+  <p>
+    <strong>Cost of certification:</strong>
+    <font color="red"><%= @course.cost_certification %></font>
+  </p>
+
+  <p>
+    <strong>Credits:</strong>
+    <%= @course.credits %>
+  </p>
+
+  <p>
+    <strong>University:</strong>
+    <%= @course.university %>
+  </p>
+
+<p>
+  <strong>Url:</strong>
+  <a class="url" href="<%= @course.url %>" target="_blank"><%= @course.url %></a>
+</p>
+
+</div>
+</div>
+
+<p>
+  <strong>Details:</strong>
+</p>
+<p> 
+  <description><%= @course.details %></description>
+</p>
+<br>
+
+<%= link_to 'Back', courses_path %>
+<%= link_to 'Edit Course', edit_course_path(@course) %> 
+<%= link_to 'Add Sub Course', new_course_link_path(course_id: @course.id) %> 
+<% if @current_member != nil and @current_member.credits == nil %>
+  <%= link_to 'Subscribe', new_subscription_path(course_id: @course.id) %> 
+<% end %>
+<!--%= link_to 'Create Copy', copy_course_path(@course) %--> 
+
+<h2>Related Courses</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Course</th>
+      <th>Type</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% for course_link in @course.course_links %>
+      <tr>
+        <td><%= link_to course_link.child_course.title, course_link.child_course %></td>
+        <td>Courses</td>
+        <td><%= button_to 'Remove', {:controller => :course_links, action: :destroy, id: course_link.id},  onclick: 'return confirm("Are you sure?")', :method => :delete%></td>
+      </tr>
+    <% end %>
+    <% for course in @course.parent_courses %>
+      <tr>
+        <td><%= link_to course.title, course %></td>
+        <td>Curriculum</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>Subscriptions <div class="star-ratings-sprite"><span style="width:<%=@average * 20%>%" class="star-ratings-sprite-rating"></span></div> </h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Member</th>
+      <th>Rating</th>
+      <th>Status</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @subscriptions.each do |subscription| %>
+      <tr>
+        <td><%= link_to subscription.member.name, subscription.member %></td>
+        <td><%= subscription.rating %></td>
+        <td><%= subscription.status %></td>
+        <td><description><%= subscription.comment %></description></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

@@ -1,0 +1,2 @@
+module CourseLinksHelper
+end

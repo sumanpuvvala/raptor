@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Entity:</strong>
+  <%= @url.entity %>
+</p>
+
+<p>
+  <strong>Url:</strong>
+  <%= @url.url %>
+</p>
+
+<p>
+  <strong>Url type:</strong>
+  <%= @url.url_type %>
+</p>
+
+<%= link_to 'Edit', edit_url_path(@url) %> |
+<%= link_to 'Back', urls_path %>

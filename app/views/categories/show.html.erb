@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<h2>Category: <%= @category.name %></h2>
+
+<%= link_to 'Back', categories_path %>
+<%= link_to 'Edit', edit_category_path(@category) %> 
+<%= link_to 'Add Topic', new_topic_path(:category_id => @category.id) %>
+
+<h2>Topics</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Classification</th>
+      <th>Team</th>
+      <th colspan="1"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @topics.each do |topic| %>
+      <tr>
+        <td><%= link_to topic.name, topic_path(topic) %></td>
+        <td><%= topic.classification.name %></td>
+        <td><% if topic.team != nil %><%= topic.team.name %><% end %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

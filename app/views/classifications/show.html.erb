@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h2>Classification: <%= @classification.name %></h2>
+
+<%= link_to 'Back', classifications_path %>
+<%= link_to 'Edit', edit_classification_path(@classification) %> 
+<%= link_to 'Add Topic', new_topic_path(:classification_id => @classification.id) %>
+
+<h2>Topics</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Team</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @topics.each do |topic| %>
+      <tr>
+        <td><%= link_to topic.name, topic_path(topic) %></td>
+        <td><%= topic.category.name %></td>
+        <td><% if topic.team != nil %><%= topic.team.name %><% end %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
