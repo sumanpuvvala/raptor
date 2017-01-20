@@ -20,12 +20,7 @@ class TeammembersController < ApplicationController
     @teams = Team.all.order(:name)
     @members = Member.all.order(:name)
     @teammember.team_id = params[:team_id]
-    if cookies[:member_id] != ""
-      @teammember.member_id = cookies[:member_id]
-    else
-      @teammember.member_id = params[:member_id]
-    end
-
+    @teammember.member_id = params[:member_id]
   end
 
   # GET /teammembers/1/edit

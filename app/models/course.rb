@@ -17,5 +17,4 @@ class Course < ApplicationRecord
 	scope :contributor, -> (member_id) { where member_id: member_id }
 	scope :difficulty, -> (difficulty) { where difficulty: difficulty }
 	scope :course_type, -> (course_type) { where course_type: course_type }
-	scope :paid, -> () { where("cost_course not in (\"0\", \"-\", \"\")") }
 end

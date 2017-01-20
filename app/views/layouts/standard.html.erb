@@ -21,9 +21,6 @@
                <li><%= link_to 'Members', members_path %></li>
                <li><a href="/maintenance">Others...</a></li>
                <li><a href="/help">Help</a></li>
-               <% if cookies[:member_id].to_s != "" %> 
-                  <li class="current_user"><%= link_to ":" + cookies[:member_name], member_path(:id => cookies[:member_id]) %></li> 
-               <% end %>
             </ul>
          </div>
          <p/>

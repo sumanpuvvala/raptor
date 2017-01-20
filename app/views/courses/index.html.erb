@@ -29,15 +29,11 @@
       <label for="member">Contributor</label> 
       <%= collection_select(nil, :member_id, @members, :id, :name, selected: @member_id, include_blank: true) %></p>
     </div> 
-    <div class="field">
-      <label for="member">Paid courses</label> 
-      <%= check_box_tag :is_paid, 1, params[:is_paid] %>
-    </div> 
-  </div>
-</div>
   <%= submit_tag "Search" %>
   <%= link_to 'Clear', courses_path %>
   <%= link_to 'Add Course', new_course_path %>
+  </div>
+</div>
 <% end %> 
 
 <table>
@@ -47,8 +43,7 @@
       <th>Topic</th>
       <th>University</th>
       <th>Course type</th>
-      <!--th>Difficulty</th-->
-      <th>Cost</th>
+      <th>Difficulty</th>
       <th>Credits</th>
       <th>Avg Rating</th>
     </tr>
@@ -63,12 +58,9 @@
         <% end %></td>
         <td><%= course.university %></td>
         <td><%= course.course_type %></td>
-        <!--td><%= course.difficulty %></td-->
-        <td><%= course.cost_course %></td>
+        <td><%= course.difficulty %></td>
         <td><%= course.credits %></td>
-        <td><% if course.rating != nil %> 
-          <div class="star-ratings-sprite"><span style="width:<%= course.rating * 20%>%" class="star-ratings-sprite-rating"></span></div>
-        <% end %></td> 
+        <td><%= course.rating %></td>
       </tr>
     <% end %>
   </tbody>

@@ -31,12 +31,10 @@
     <%= f.text_field :manager %>
   </div>
 
-<% if @current_member != nil and @current_member.is_lead %>
   <div class="field">
     <%= f.label :is_lead %>
     <%= f.check_box :is_lead %>
   </div>
-<% end %>
 
   <div class="actions">
     <%= f.submit %>

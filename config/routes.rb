@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  get 'members/unmark'
-
-  get 'members/mark'
-
   resources :course_links
   resources :subscriptions
   resources :urls
@@ -17,8 +13,6 @@ Rails.application.routes.draw do
   resources :members
 
   match 'courses/:id/copy' => 'courses#copy', :as => :copy_course, via: [:get]
-  match 'members/:id/mark' => 'members#mark', :as => :mark_member, via: [:get]
-  match 'members/:id/unmark' => 'members#unmark', :as => :unmark_member, via: [:get]
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   get 'maintenance', to: :maintenance, controller: 'members'

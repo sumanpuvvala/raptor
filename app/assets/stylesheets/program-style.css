@@ -173,18 +173,6 @@ a {
   text-decoration: none;
 }
 
-input.btn-red,
-a.btn-red
-{
-  background-color: rgba(192, 0, 0, 0.7);
-}
-
-input.btn-blue,
-a.btn-blue
-{
-  background-color: rgba(0, 0, 192, 0.7);
-}
-
 textarea {
   height: 10rem;
 }
@@ -232,14 +220,6 @@ ul#navigation > li > a {
   text-transform: none;
 }
 
-ul#navigation > li.current_user {
-  float: right;
-}
-
-ul#navigation > li.current_user > a {
-  font-style: italic;
-}
-
 .url {
   text-align: left;
   display: inline-block;
@@ -258,7 +238,6 @@ ul#navigation > li.current_user > a {
 p description,
 td description {
   white-space:pre-wrap;
-  margin-bottom: 8px;
 }
 
 input:required,

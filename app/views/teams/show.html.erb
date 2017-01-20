@@ -28,10 +28,8 @@
   <tbody>
     <% @teammembers.each do |teammember| %>
       <tr>
-        <td><%= link_to teammember.member.name, member_path(teammember.member) %></td> 
-        <% if @current_member != nil and (@current_member.id == teammember.member.id or @current_member.is_lead or @current_member.id == @team.member.id)%> 
-          <td><%= button_to 'Remove', {:controller => :teammembers, action: :destroy, id: teammember.id},  onclick: 'return confirm("Are you sure?")', :method => :delete %></td> 
-        <% end %>
+        <td><%= link_to teammember.member.name, member_path(teammember.member) %></td>
+        <td><%= button_to 'Remove', {:controller => :teammembers, action: :destroy, id: teammember.id},  onclick: 'return confirm("Are you sure?")', :method => :delete %></td>
       </tr>
     <% end %>
   </tbody>
