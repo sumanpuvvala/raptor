@@ -1,0 +1,42 @@
+<p id="notice"><%= notice %></p>
+
+<h2>Named Lists</h2>
+
+<%= form_tag named_lists_path, :method => 'get' do %>
+
+  <div class="field">
+    <label for="list_name">List Name</label> 
+    <%= collection_select(nil, :list_name, @list_names, :list_name, :list_name, selected: @list_name, include_blank: true) %></p>
+  </div> 
+  <%= submit_tag "Search" %>
+  <%= link_to 'Clear', named_lists_path %> 
+  <% if @current_member != nil and @current_member.is_lead %> 
+    <%= link_to 'Add Entry', new_named_list_path %> 
+  <% end %>
+
+<% end %> 
+
+<p>
+
+<table>
+  <thead>
+    <tr>
+      <th>List name</th>
+      <th>Entry name</th>
+      <th colspan="1"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @named_lists.each do |named_list| %>
+      <tr>
+        <td><%= named_list.list_name %></td>
+        <td><%= named_list.entry_name %></td>
+        <% if @current_member != nil and @current_member.is_lead %> 
+          <!--td><%= link_to 'Edit', edit_named_list_path(named_list.id) %></td--> 
+          <td><%= button_to 'Remove', {:controller => :named_lists, action: :destroy, id: named_list.id},  onclick: 'return confirm("Are you sure?")', :method => :delete%></td> 
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

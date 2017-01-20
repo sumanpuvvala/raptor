@@ -1,0 +1,56 @@
+<p id="notice"><%= notice %></p>
+
+<h2>Subscriptions</h2>
+
+<p>
+<%= form_tag subscriptions_path, :method => 'get' do %>
+
+<div style="width: 100%; float:left">
+  <div style="width: 50%; float:left">
+    <div class="field">
+      <label for="member_id">Member</label> 
+      <%= collection_select(nil, :member_id, @members, :id, :name, selected: @member_id, include_blank: true) %>
+    </div> 
+    <div class="field">
+      <label for="course_id">Course</label> 
+      <%= collection_select(nil, :course_id, @courses, :id, :title, selected: @course_id, include_blank: true) %>
+    </div> 
+  </div>
+  <div style="width: 50%; float:right">
+    <div class="field">
+      <label for="course_type">Status</label> 
+      <%= collection_select(nil, :status, @statuses, :entry_name, :entry_name, selected: @status, include_blank: true) %>
+    </div> 
+  <%= submit_tag "Search" %>
+  <%= link_to 'Clear', subscriptions_path %>
+  </div>
+</div>
+<% end %> 
+
+<table>
+  <thead>
+    <tr>
+      <th>Member</th>
+      <th>Course</th>
+      <th>Credits</th>
+      <th>Status</th>
+      <th>Rating</th>
+      <th>Comment</th>
+      <th colspan="1"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @subscriptions.each do |subscription| %>
+      <tr>
+        <td><%= link_to subscription.member.name, subscription.member %></td>
+        <td><%= link_to subscription.course.title, subscription.course %></td>
+        <td><%= subscription.course.credits %></td>
+        <td><%= subscription.status %></td>
+        <td><%= subscription.rating %></td>
+        <td><%= subscription.comment %></td>
+        <td><%= link_to 'Edit', edit_subscription_path(subscription) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

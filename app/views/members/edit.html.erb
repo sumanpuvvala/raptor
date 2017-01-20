@@ -1,0 +1,8 @@
+<h2>Editing Member</h2>
+
+<%= render 'form', member: @member %>
+<% if @current_member != nil and @current_member.is_lead %>
+<%= button_to 'Remove', {:controller => :members, action: :destroy, id: @member.id}, {onclick: 'return confirm("Are you sure?")', class: 'btn-red', :method => :delete}%>
+<% end %>
+<br>
+<%= link_to 'Back', @member %> 

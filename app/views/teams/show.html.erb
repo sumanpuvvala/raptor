@@ -1,0 +1,64 @@
+<p id="notice"><%= notice %></p>
+
+<h2>Team: <%= @team.name %></h2>
+
+<p>
+  <strong>Lead:</strong>
+  <%= @team.member.name %>
+</p>
+<p>
+  <strong>Purpose:</strong>
+  <%= @team.purpose %>
+</p>
+
+<%= link_to 'Back', teams_path %>
+<%= link_to 'Edit', edit_team_path(@team) %> 
+<%= link_to 'Add Member', new_teammember_path(:team_id => @team.id) %>
+<%= link_to 'Add Topic', new_topic_path(:team_id => @team.id) %>
+
+<h2>Members</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Member</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @teammembers.each do |teammember| %>
+      <tr>
+        <td><%= link_to teammember.member.name, member_path(teammember.member) %></td> 
+        <% if @current_member != nil and (@current_member.id == teammember.member.id or @current_member.is_lead or @current_member.id == @team.member.id)%> 
+          <td><%= button_to 'Remove', {:controller => :teammembers, action: :destroy, id: teammember.id},  onclick: 'return confirm("Are you sure?")', :method => :delete %></td> 
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p>
+<h2>Topics</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Classification</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @topics.each do |topic| %>
+      <tr>
+        <td><%= link_to topic.name, topic %></td>
+        <td><%= topic.category.name %></td>
+        <td><%= topic.classification.name %></td>
+        <td><%= topic.details %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

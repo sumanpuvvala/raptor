@@ -1,0 +1,59 @@
+<p id="notice"><%= notice %></p>
+
+<h2>Topics</h2>
+
+<%= form_tag topics_path, :method => 'get' do %>
+
+<div style="width: 100%; float:left">
+  <div style="width: 50%; float:left">
+    <div class="field">
+      <label for="name">Topic</label> 
+      <%= text_field nil, :topic_name, {value: @topic_name, placeholder: "search with wildcard"} %></p>
+    </div> 
+    <div class="field">
+      <label for="team">Team</label> 
+      <%= collection_select(nil, :team_id, @teams, :id, :name, selected: @team_id, include_blank: true) %>
+    </div> 
+    <!--div class="field">
+      <label for="team">Sort By</label> 
+      <%= select_tag "sort_by", options_for_select(['name','category'].map{|o| [o,o] }) %>
+    </div--> 
+  </div>
+  <div style="width: 50%; float:right">
+    <div class="field">
+      <label for="category">Category</label> 
+      <%= collection_select(nil, :category_id, @categories, :id, :name, selected: @category_id, include_blank: true) %>
+    </div> 
+    <div class="field">
+      <label for="classification">Classification</label> 
+      <%= collection_select(nil, :classification_id, @classifications, :id, :name, selected: @classification_id, include_blank: true) %>
+    </div> 
+  </div>
+</div>
+  <%= submit_tag "Search" %>
+  <%= link_to 'Clear', topics_path %>
+  <%= link_to 'Add Topic', new_topic_path %>
+<% end %> 
+
+<p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Classification</th>
+      <th>Team</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @topics.each do |topic| %>
+      <tr>
+        <td><%= link_to topic.name, topic %></td>
+        <td><%= topic.category.name %></td>
+        <td><%= topic.classification.name %></td>
+        <td><% if topic.team != nil %><%= topic.team.name %><% end %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

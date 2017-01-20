@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Team:</strong>
+  <%= @teammember.team.name %>
+</p>
+
+<p>
+  <strong>Member:</strong>
+  <%= @teammember.member.name %>
+</p>
+
+<!--%= link_to 'Edit', edit_teammember_path(@teammember) %--> 
+<%= button_to "Delete", @teammember, :method=>:delete, :class=>:destroy, data: {confirm: 'Are you certain?'}%>
+<%= link_to 'Back', team_path(:id => @teammember.team_id) %>

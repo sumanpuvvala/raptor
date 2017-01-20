@@ -1,0 +1,2 @@
+module NamedListsHelper
+end

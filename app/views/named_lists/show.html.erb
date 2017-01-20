@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>List name:</strong>
+  <%= @named_list.list_name %>
+</p>
+
+<p>
+  <strong>Entry name:</strong>
+  <%= @named_list.entry_name %>
+</p>
+
+<%= link_to 'Edit', edit_named_list_path(@named_list) %> 
+<%= link_to 'Back', named_lists_path %>

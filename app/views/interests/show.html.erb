@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Topic:</strong>
+  <%= link_to @interest.topic.name, topic_path(id: @interest.topic_id) %>
+</p>
+
+<p>
+  <strong>Member:</strong>
+  <%= link_to @interest.member.name, member_path(id: @interest.member_id) %>
+</p>
+
+<%= button_to 'Remove', {:controller => :interests, action: :destroy, id: @interest.id},  onclick: 'return confirm("Are you sure?")', :method => :delete%>

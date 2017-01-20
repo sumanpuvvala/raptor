@@ -1,0 +1,78 @@
+<div>
+   <ul id = "navigation"> 
+     <li><a href="/help">Help</a></li>
+     <li><a href="/program">Program</a></li>
+     <li><a href="/faq">FAQ</a></li>
+     <li><a href="/app"><b>Application</b></a></li>
+   </ul>
+</div>
+<div style="width: 100%; float:left">
+  <div style="width: 30%; float:left; padding-right: 20px"> 
+  	<h2>App</h2>
+  	Built with
+  	<ul>
+  	  <li>Ruby on Rails</li>
+  	  <li>SQLite database</li>
+  	  <li>Modified Materialize CSS</li>
+  	  <li>Python data scripts</li>
+  	</ul>
+  	<i>* Works best with Chrome</i>
+
+  	<p>
+  	<h3>Change Log:</h3>
+
+    <b>Dec 30, 2016:</b>
+    <ul>
+      <li>Subscribed credits in Member Search screen</li>
+    </ul>
+
+  	<b>Dec 4, 2016:</b>
+  	<ul>
+  	  <li>Subscribe option added in the Course page</li>
+  	  <li>Bugs fixed in Subscribe page</li>
+  	  <li>Data refreshed for Dec 3</li>
+  	  <li>Course difficulty added as a search option</li>
+  	  <li>Feedback page added</li>
+  	  <li>Help page updated</li>
+    </ul>
+
+  </div>
+  <div style="width: 70%; float:right; padding-left: 20px">
+	<h2>Feedback</h2>
+	<h3>Pagination in the course page will help browse - Rakesh</h3>
+	<p style="color: blue">Open for contrib.</p> Use search for filtering relevant results. Each topic has less than a page of courses</p>
+
+	<h3>Would there be a login or will be it linked to exchange / domain server - Rakesh</h3>
+	<p style="color: blue">Login or current-user is open for contrib. SSO might be a stretch</p>
+
+	<h3>How do I track what I am doing? See my % complete. Show credits on the Subscriptions against member. Also show total credits completed - Rakesh</h3>
+	<p>Credits are listed against subscription. Count the credits of "Completed" courses</p>
+
+	<h3>How do I subscribe? I tried from the Member page. The course drop down needs a filter or auto complete text field - Rakesh</h3>
+	<p style="color: red">This needs redesign. Course dropdown has to be replaced everywhere.</p> Alternatively, Subscribe option is available in Course page. Select your name to susbcribe.</p>
+
+	<h3>What is interested vs recommended? if I am starting a course, how would I know status?</h3>
+	<p>See Help for details about subscription status</p>
+
+	<h3>Can everyone edit a course, and my subscriptions?</h3>
+	<p>Yes. At this time, this app is replacing an excel sheet. Everyone is expected to be careful. Access control may be possible after login is supported</p>
+
+	<h3>Add Sorting on the Column headers. It would be helpful to sort based on Topic, Difficult or Credits etc. - Raghavendra Busireddy</h3>
+	<p>Sorting might be tough to implement, as most sort fields require joins, and that will significantly increase complexity of existing codebase. Not a good idea given there is no active dev community contributin.
+
+	<h3>Clicking on Back is going to the Parent page, instead of the Navigation Back - Raghavendra Busireddy</h3>
+	<p>On some screens, browser Back is not valid. TO be consistent, specific behavior is set for each screen</p>
+
+	<h3>Add Bookmark to the Courses - Raghavendra Busireddy</h3>
+	<p>Subscribe to the course and set status as Interested. Credits are not counted till tatus is changed to Completed</p>
+
+	<h3>How to delete a Topic?</h3>
+	<p style="color: red">Not available currently.</p> Will be enabled if no Courses or Interests.
+
+	<h3>There is no home page link. It would be good to have a link on every page to navigate back to home page</h3>
+	<p style="color: blue"> Concern addressed. User was refering to this help page which us under Help/Feedback</p>
+
+	<h3></h3>
+	<p style="color: blue"></p>
+  </div>
+</div>

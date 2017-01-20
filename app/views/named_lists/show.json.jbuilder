@@ -1,0 +1,1 @@
+json.partial! "named_lists/named_list", named_list: @named_list

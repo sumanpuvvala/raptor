@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<h2>Teams</h2>
+<%= link_to 'New Team', new_team_path %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Lead</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @teams.each do |team| %>
+      <tr>
+        <td><%= link_to team.name, team %></td>
+        <td><%= team.member.name %></td>
+        <td><%= team.purpose %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

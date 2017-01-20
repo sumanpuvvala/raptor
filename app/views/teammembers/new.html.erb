@@ -1,0 +1,11 @@
+<h2>New Teammember</h2>
+
+<%= render 'form', teammember: @teammember %>
+<br>
+<% if @teammember.member_id? %> 
+	<%= link_to 'Back', member_path(:id => @teammember.member_id) %>
+<% elsif @teammember.team_id? %> 
+	<%= link_to 'Back', team_path(:id => @teammember.team_id) %>
+<% else %> 
+	<%= link_to 'Back', teams_path %>
+<% end %>

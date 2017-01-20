@@ -1,0 +1,80 @@
+<p id="notice"><%= notice %></p>
+
+<h2>Topic: <%= @topic.name %></h2>
+
+<div style="width: 100%; float:left">
+  <div style="width: 50%; float:left">
+
+<p>
+  <strong>Category:</strong>
+  <%= link_to @topic.category.name, category_path(@topic.category) %>
+</p>
+
+<p>
+  <strong>Classification:</strong>
+  <%= link_to @topic.classification.name, classification_path(@topic.classification) %>
+</p>
+
+  </div>
+  <div style="width: 50%; float:right">
+<p>
+  <strong>Team:</strong>
+  <% if @topic.team != nil %><%= link_to @topic.team.name, team_path(@topic.team) %><% end %>
+</p>
+  </div>
+</div>
+
+<p>
+  <strong>Details:</strong>
+</p>
+<p>
+  <description><%= @topic.details %></description>
+</p>
+
+<%= link_to 'Back', topics_path %>
+<%= link_to 'Edit Topic', edit_topic_path(@topic) %> 
+<%= link_to 'Add Course', new_course_path(:topic_id => @topic.id) %>
+<%= link_to 'Bookmark', new_interest_path(:topic_id => @topic.id) %>
+
+<h2>Courses</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Course type</th>
+      <th>Contributor</th>
+      <th>Credits</th>
+      <th>University</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @courses.each do |course| %>
+      <tr>
+        <td><%= link_to course.title, course %></td>
+        <td><%= course.course_type %></td>
+        <td><%= course.member.name %></td>
+        <td><%= course.credits %></td>
+        <td><%= course.university %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>Interested</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Member</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @interests.each do |interest| %>
+      <tr>
+        <td><%= link_to interest.member.name, interest.member %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

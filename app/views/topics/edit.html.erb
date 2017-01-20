@@ -1,0 +1,8 @@
+<h2>Editing Topic</h2>
+
+<%= render 'form', topic: @topic %>
+<% if @current_member != nil and @current_member.is_lead %>
+<%= button_to 'Remove', {:controller => :topics, action: :destroy, id: @topic.id}, {onclick: 'return confirm("Are you sure?")', class: 'btn-red', :method => :delete}%>
+<% end %>
+<br>
+<%= link_to 'Back', @topic %>

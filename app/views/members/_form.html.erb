@@ -1,0 +1,44 @@
+<%= form_for(member) do |f| %>
+  <% if member.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(member.errors.count, "error") %> prohibited this member from being saved:</h2>
+
+      <ul>
+      <% member.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name, {required: true} %>
+  </div>
+
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= f.label :stream %>
+    <%= f.collection_select(:stream, @streams, :entry_name, :entry_name, {:include_blank => true}) %></p>
+  </div>
+
+  <div class="field">
+    <%= f.label :manager %>
+    <%= f.text_field :manager %>
+  </div>
+
+<% if @current_member != nil and @current_member.is_lead %>
+  <div class="field">
+    <%= f.label :is_lead %>
+    <%= f.check_box :is_lead %>
+  </div>
+<% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

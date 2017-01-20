@@ -1,0 +1,11 @@
+<h2>New Subscription</h2>
+
+<%= render 'form', subscription: @subscription %>
+<br>
+<% if @member != nil %>
+	<%= link_to 'Back', member_path(@subscription.member) %>
+<% elsif @course != nil %>
+	<%= link_to 'Back', course_path(@subscription.course) %>
+<% else %>
+	<%= link_to 'Back', courses_path %>
+<% end %>

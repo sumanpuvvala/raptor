@@ -1,0 +1,26 @@
+<p id="notice"><%= notice %></p>
+
+<h2>Classifications</h2>
+
+<% if @current_member != nil and @current_member.is_lead %>
+<%= link_to 'Add Classification', new_classification_path %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @classifications.each do |classification| %>
+      <tr>
+        <td><%= link_to classification.name, classification_path(classification) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+

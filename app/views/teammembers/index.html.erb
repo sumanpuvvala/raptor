@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h2>Teammembers</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Team</th>
+      <th>Member</th>
+      <th colspan="1"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @teammembers.each do |teammember| %>
+      <tr>
+        <td><%= teammember.team %></td>
+        <td><%= teammember.member %></td>
+        <td><%= button_to 'Delete', {:controller => :teammembers, action: :destroy, id: teammember.id},  onclick: 'return confirm("Are you sure?")', :method => :delete%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Teammember', new_teammember_path %>
