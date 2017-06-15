@@ -27,6 +27,7 @@ class CoursesController < ApplicationController
     @courses = @courses.course_type(@course_type) if params[:course_type].present?
     @courses = @courses.paid() if params[:is_paid].present?
     @courses = @courses.includes(:topic, :member).order(:title)
+    @courses = @courses.active()
 
     @subscriptions = Subscription.completion().group(:course_id).average(:rating)
 
@@ -152,6 +153,6 @@ class CoursesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def course_params
-      params.require(:course).permit(:title, :details, :topic_id, :course_type, :time_estimate, :difficulty, :cost_course, :cost_certification, :member_id, :credits, :university, :url)
+      params.require(:course).permit(:title, :details, :topic_id, :course_type, :time_estimate, :difficulty, :cost_course, :cost_certification, :member_id, :credits, :university, :url, :active)
     end
 end

@@ -71,6 +71,13 @@
     <%= f.url_field :url %>
   </div>
 
+  <% if @current_member != nil and @current_member.is_lead %>
+    <div class="field">
+      <%= f.label :active %>
+      <%= f.check_box :active %>
+    </div>
+  <% end %>
+
   <div class="actions">
     <%= f.submit %>
   </div>

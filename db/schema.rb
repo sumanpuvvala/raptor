@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161108091104) do
+ActiveRecord::Schema.define(version: 20170615184249) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -24,13 +24,12 @@ ActiveRecord::Schema.define(version: 20161108091104) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "course_links", id: false, force: :cascade do |t|
+  create_table "course_links", force: :cascade do |t|
     t.integer  "course_id"
     t.integer  "child_course_id"
     t.string   "link_type"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.integer  "id"
   end
 
   create_table "courses", force: :cascade do |t|
@@ -48,6 +47,7 @@ ActiveRecord::Schema.define(version: 20161108091104) do
     t.string   "url"
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
+    t.boolean  "active"
   end
 
   create_table "interests", force: :cascade do |t|
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 20161108091104) do
     t.text     "comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date     "due"
   end
 
   create_table "teammembers", force: :cascade do |t|

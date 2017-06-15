@@ -48,7 +48,7 @@ class MembersController < ApplicationController
     @teams = Team.where(member_id: params[:id])
     @courses = Course.where(member_id: params[:id]).includes(:topic).order(:title)
     @interests = Interest.where(member_id: params[:id])
-    @subscriptions = Subscription.where(member_id: params[:id]).includes(:course)
+    @subscriptions = Subscription.where(member_id: params[:id]).includes(:course).order(:due)
 
     @total_credits = @subscriptions.joins(:course).sum(:credits)
     @completed_credits = @subscriptions.completion().joins(:course).sum(:credits)

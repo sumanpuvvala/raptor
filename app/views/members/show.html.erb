@@ -55,6 +55,9 @@
       <tr>
         <td><%= link_to subscription.course.title, subscription.course %></td>
         <td><%= subscription.course.credits %></td>
+        <td><% if subscription.due != nil %>
+          <%= l(subscription.due, format: :short) %>
+        <% end %></td>
         <td><%= subscription.status %></td>
         <td><%= subscription.rating %></td>
         <td><description><%= subscription.comment %></description></td>

@@ -38,6 +38,11 @@
   <% end %>
 
   <div class="field">
+    <%= f.label :due %>
+    <%= f.date_field :due %>
+  </div>
+
+  <div class="field">
     <%= f.label :status %>
       <%= f.collection_select(:status, @statuses, :entry_name, :entry_name, {selected: subscription.status, prompt: true}) %></p>
   </div>
