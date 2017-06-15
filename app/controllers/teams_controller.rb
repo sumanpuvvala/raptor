@@ -76,7 +76,7 @@ class TeamsController < ApplicationController
     end
 
     def current_member
-      if cookies[:member_id] != ""
+      if cookies[:member_id] != "" and cookies[:member_id] != nil
         @current_member = Member.find(cookies[:member_id])
       end
     end

@@ -30,9 +30,13 @@ class MembersController < ApplicationController
     @completed_subscriptions = Subscription.completion()
     @completed_subscriptions = @completed_subscriptions.joins(:course, :member).group(:member_id).sum(:credits)
 
+    @inprogress_subscriptions = Subscription.inprogress()
+    @inprogress_subscriptions = @inprogress_subscriptions.joins(:course, :member).group(:member_id).sum(:credits)
+
     @members.each do |m| 
       m.credits = @subscriptions[m.id]
       m.credits_earned = @completed_subscriptions[m.id]
+      m.credits_inprogress = @inprogress_subscriptions[m.id]
     end
 
   end
@@ -122,9 +126,6 @@ class MembersController < ApplicationController
     end
   end
 
-  def maintenance
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_member
@@ -132,7 +133,7 @@ class MembersController < ApplicationController
     end
 
     def current_member
-      if cookies[:member_id] != ""
+      if cookies[:member_id] != "" and cookies[:member_id] != nil
         @current_member = Member.find(cookies[:member_id])
       end
     end

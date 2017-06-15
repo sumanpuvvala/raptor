@@ -7,4 +7,5 @@ class Subscription < ApplicationRecord
 	scope :status, -> (status) { where status: status }
 	scope :subscription, -> { where("status <> 'Recommended'") }
 	scope :completion, -> { where("status in ('Completed', 'Certified')") }
+	scope :inprogress, -> { where("status in ('In Progress')") }
 end

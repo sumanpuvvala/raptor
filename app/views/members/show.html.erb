@@ -20,7 +20,7 @@
 <p>
   <strong>Manager:</strong>
   <%= @member.manager %>
-</p>
+</p> 
 
 <%= link_to 'Back', members_path %>
 <% if cookies[:member_id].to_s == @member.id.to_s or (@current_member != nil and @current_member.is_lead)%>
@@ -33,7 +33,7 @@
 <% if cookies[:member_id].to_s == @member.id.to_s %> 
   <%= link_to 'Forget Me', unmark_member_path(@member), :class => "btn-red" %>
 <% end %> 
-<% if cookies[:member_id] == "" %> 
+<% if cookies[:member_id] == nil or cookies[:member_id] == "" %> 
   <%= link_to 'This is Me', mark_member_path(@member), :class => "btn-blue" %>
 <% end %>
 
