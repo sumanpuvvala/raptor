@@ -93,7 +93,9 @@
       <tr>
         <td><%= link_to course_link.child_course.title, course_link.child_course %></td>
         <td>Courses</td>
-        <td><%= button_to 'Remove', {:controller => :course_links, action: :destroy, id: course_link.id},  onclick: 'return confirm("Are you sure?")', :method => :delete%></td>
+        <% if cookies[:member_id].to_s == @course.member.id.to_s or (@current_member != nil and @current_member.is_lead) %>
+          <td><%= button_to 'Remove', {:controller => :course_links, action: :destroy, id: course_link.id},  onclick: 'return confirm("Are you sure?")', :method => :delete%></td>
+        <% end %>
       </tr>
     <% end %>
     <% for course in @course.parent_courses %>
