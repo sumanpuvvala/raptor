@@ -18,4 +18,5 @@ class Course < ApplicationRecord
 	scope :difficulty, -> (difficulty) { where difficulty: difficulty }
 	scope :course_type, -> (course_type) { where course_type: course_type }
 	scope :paid, -> () { where("cost_course not in (\"0\", \"-\", \"\")") }
+	scope :active, -> () { where active: true }
 end

@@ -5,7 +5,7 @@
    <head>
       <meta http-equiv = "Content-Type" content = "text/html; charset = iso-8859-1" />
       <meta http-equiv = "Content-Language" content = "en-us" />
-      <title>Architect Program</title>
+      <title><%= Rails.configuration.application_title %></title>
       <%= stylesheet_link_tag "program-style" %>
    </head>
 
@@ -13,7 +13,7 @@
       <div id = "container">
          
          <div id = "header">
-            <h1>Architect Program 2016-17 <img src="/images/jda.png" alt="JDA" height="66" style="float: left;"></h1>
+            <h1><%= Rails.configuration.application_name %> <img src="/images/jda.png" alt="JDA" height="66" style="float: left;"></h1>
             <ul id = "navigation"> 
                <li><%= link_to 'Categories', categories_path %></li>
                <li><%= link_to 'Topics', topics_path %></li>

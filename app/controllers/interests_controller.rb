@@ -20,7 +20,7 @@ class InterestsController < ApplicationController
 
     if params[:topic_id] != nil
       @interest.topic_id = params[:topic_id] 
-      @members = Member.all.order(:name) 
+      @members = Member.active().order(:name) 
       @topic = Topic.find(@interest.topic_id)
     end
 
@@ -31,7 +31,7 @@ class InterestsController < ApplicationController
     end
 
     if @interest.member_id != nil
-      @topics = Topic.all.order(:name) 
+      @topics = Topic.active().order(:name) 
       @member = Member.find(@interest.member_id) 
     end
   end

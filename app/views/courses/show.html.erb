@@ -120,7 +120,13 @@
   <tbody>
     <% @subscriptions.each do |subscription| %>
       <tr>
-        <td><%= link_to subscription.member.name, subscription.member %></td>
+        <td>
+          <% if subscription.member.active == true %>
+            <%= link_to subscription.member.name, subscription.member %>
+          <% else %>
+            <%= subscription.member.name %>
+          <% end %>
+        </td>
         <td><%= subscription.rating %></td>
         <td><%= subscription.status %></td>
         <td><description><%= subscription.comment %></description></td>
@@ -128,4 +134,3 @@
     <% end %>
   </tbody>
 </table>
-
