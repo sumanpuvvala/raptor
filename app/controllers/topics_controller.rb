@@ -11,9 +11,9 @@ layout 'standard'
   def index
     @topics = Topic.where(nil)
 
-    @categories = Category.all.order(:name)
-    @classifications = Classification.all.order(:name)
-    @teams = Team.all.order(:name)
+    @categories = Category.active().order(:name)
+    @classifications = Classification.active().order(:name)
+    @teams = Team.active().order(:name)
 
     @topic_name = params[:topic_name]
     @category_id = params[:category_id]
@@ -29,24 +29,31 @@ layout 'standard'
     @topics = @topics.classification(@classification_id) if params[:classification_id].present?
     @topics = @topics.team(@team_id) if params[:team_id].present?
     @topics = @topics.includes(:category, :classification, :team)
+    @topics = @topics.active()
     @topics = @topics.order(:name)
   end
 
   # GET /topics/1
   # GET /topics/1.json
   def show
-    @courses = Course.where(topic_id: params[:id]).includes(:member)
+    @courses = Course.active().where(topic_id: params[:id]).includes(:member)
 
     @interests = Interest.where(topic_id: params[:id])
+
+    @subscriptions = Subscription.completion().group(:course_id).average(:rating)
+
+    @courses.each do |c| 
+      c.rating = @subscriptions[c.id]
+    end
   end
 
   # GET /topics/new
   def new
     @topic = Topic.new
     
-    @categories = Category.all.order(:name)
-    @classifications = Classification.all.order(:name)
-    @teams = Team.all.order(:name)
+    @categories = Category.active().order(:name)
+    @classifications = Classification.active().order(:name)
+    @teams = Team.active().order(:name)
 
     @topic.category_id = params[:category_id]
     @topic.classification_id = params[:classification_id]
@@ -55,9 +62,9 @@ layout 'standard'
 
   # GET /topics/1/edit
   def edit
-    @categories = Category.all.order(:name)
-    @classifications = Classification.all.order(:name)
-    @teams = Team.all.order(:name)
+    @categories = Category.active().order(:name)
+    @classifications = Classification.active().order(:name)
+    @teams = Team.active().order(:name)
   end
 
   # POST /topics
@@ -114,6 +121,6 @@ layout 'standard'
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def topic_params
-      params.require(:topic).permit(:name, :category_id, :classification_id, :team_id, :details)
+      params.require(:topic).permit(:name, :category_id, :classification_id, :team_id, :details, :active)
     end
 end

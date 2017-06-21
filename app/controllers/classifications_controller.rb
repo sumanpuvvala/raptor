@@ -7,13 +7,13 @@ class ClassificationsController < ApplicationController
   # GET /classifications
   # GET /classifications.json
   def index
-    @classifications = Classification.all.order(:name)
+    @classifications = Classification.active().order(:name)
   end
 
   # GET /classifications/1
   # GET /classifications/1.json
   def show
-    @topics = Topic.where(classification_id: params[:id]).includes(:category, :team).order(:name)
+    @topics = Topic.active().where(classification_id: params[:id]).includes(:category, :team).order(:name)
   end
 
   # GET /classifications/new
@@ -79,6 +79,6 @@ class ClassificationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def classification_params
-      params.require(:classification).permit(:name)
+      params.require(:classification).permit(:name, :active)
     end
 end

@@ -24,10 +24,6 @@
       <label for="manager">Manager</label> 
       <%= collection_select(nil, :manager, @managers, :manager, :manager, selected: @manager, include_blank: true) %></p>
     </div> 
-    <!--div class="field">
-      <label for="member">With Subscriptions</label> 
-      <%= check_box_tag :has_subscribed, 1, params[:has_subscribed] %>
-    </div--> 
    </div>
 </div>
   <%= submit_tag "Search" %>
@@ -53,8 +49,8 @@
   <tbody>
     <% @members.each do |member| %>
       <tr>
-        <td><%= link_to member.name, member_path(member) %> <% if (member.is_lead?) %> (Lead) <% end %> </td>
-        <td><%= member.title %></td>
+        <td><%= link_to member.name, member_path(member) %></td>
+        <td><%= member.title %> <% if (member.is_lead?) %> <strong>(Lead)</strong> <% end %> </td>
         <td><%= member.stream %></td>
         <td><%= member.manager %></td>
         <td><%= member.credits %></td>

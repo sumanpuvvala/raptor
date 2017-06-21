@@ -9,4 +9,5 @@ class Topic < ApplicationRecord
 	scope :classification, -> (classification_id) { where classification_id: classification_id }
 	scope :category, -> (category_id) { where category_id: category_id }
 	scope :team, -> (team_id) { where team_id: team_id }
+	scope :active, -> () { where active: true }
 end

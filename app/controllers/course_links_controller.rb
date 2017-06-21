@@ -22,7 +22,6 @@ class CourseLinksController < ApplicationController
 
     @course = Course.find(params[:course_id])
 
-#    @courses = Course.all.order(:title)
     @courses = Course.where(nil)
     @courses = @courses.topic(@course.topic_id) if params[:course_id].present?
     @courses = @courses.includes(:topic, :member).order(:title)

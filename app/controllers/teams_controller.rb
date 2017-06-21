@@ -7,7 +7,7 @@ class TeamsController < ApplicationController
   # GET /teams
   # GET /teams.json
   def index
-    @teams = Team.all.order(:name).includes(:member)
+    @teams = Team.active().order(:name).includes(:member)
   end
 
   # GET /teams/1
@@ -15,18 +15,18 @@ class TeamsController < ApplicationController
   def show
 #    @teams = Team.find(params[:id])
     @teammembers = Teammember.where(team_id: params[:id]).order(:team_id).includes(:member)
-    @topics = Topic.where(team_id: params[:id]).order(:name).includes(:category, :classification)
+    @topics = Topic.active().where(team_id: params[:id]).order(:name).includes(:category, :classification)
   end
 
   # GET /teams/new
   def new
     @team = Team.new
-    @members = Member.all.order(:name)
+    @members = Member.active().order(:name)
   end
 
   # GET /teams/1/edit
   def edit
-    @members = Member.all.order(:name)
+    @members = Member.active().order(:name)
   end
 
   # POST /teams
@@ -83,6 +83,6 @@ class TeamsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def team_params
-      params.require(:team).permit(:name, :member_id, :purpose)
+      params.require(:team).permit(:name, :member_id, :purpose, :active)
     end
 end

@@ -1,5 +1,6 @@
 class SubscriptionsController < ApplicationController
   before_action :set_subscription, only: [:show, :edit, :update, :destroy]
+  before_action :current_member, only: [:show, :new, :edit]
 
   layout 'standard'
 
@@ -8,8 +9,8 @@ class SubscriptionsController < ApplicationController
   def index
     @subscriptions = Subscription.where(nil)
 
-    @courses = Course.all.order(:title)
-    @members = Member.all.order(:name)
+    @courses = Course.active().order(:title)
+    @members = Member.active().order(:name)
     @statuses = NamedList.where(list_name: 'status').select(:entry_name).order(:entry_name)
 
     @course_id = params[:course_id]
@@ -37,7 +38,7 @@ class SubscriptionsController < ApplicationController
       @subscription.course_id = params[:course_id] 
       @course = Course.find(@subscription.course_id)
     else
-      @courses = Course.all.order(:title) 
+      @courses = Course.active().order(:title) 
     end
 
     if cookies[:member_id] != ""
@@ -49,7 +50,7 @@ class SubscriptionsController < ApplicationController
     if @subscription.member_id != nil
       @member = Member.find(@subscription.member_id) 
     else
-      @members = Member.all.order(:name) 
+      @members = Member.active().order(:name) 
     end
     
     @statuses = NamedList.where(list_name: 'status').select(:entry_name).order(:entry_name)
@@ -106,6 +107,12 @@ class SubscriptionsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_subscription
       @subscription = Subscription.find(params[:id])
+    end
+
+    def current_member
+      if cookies[:member_id] != "" and cookies[:member_id] != nil
+        @current_member = Member.find(cookies[:member_id])
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

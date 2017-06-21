@@ -7,10 +7,10 @@ class CoursesController < ApplicationController
   # GET /courses
   # GET /courses.json
   def index
-    @courses = Course.where(nil)
+    @courses = Course.where(nil).active()
 
-    @topics = Topic.all.order(:name)
-    @members = Member.all.order(:name)
+    @topics = Topic.active().order(:name)
+    @members = Member.active().order(:name)
     @difficulties = NamedList.where(list_name: 'difficulty').select(:entry_name).order(:entry_name)
     @course_types = NamedList.where(list_name: 'course_type').select(:entry_name).order(:entry_name)
 
@@ -27,7 +27,6 @@ class CoursesController < ApplicationController
     @courses = @courses.course_type(@course_type) if params[:course_type].present?
     @courses = @courses.paid() if params[:is_paid].present?
     @courses = @courses.includes(:topic, :member).order(:title)
-    @courses = @courses.active()
 
     @subscriptions = Subscription.completion().group(:course_id).average(:rating)
 
@@ -44,13 +43,7 @@ class CoursesController < ApplicationController
     @average = @subscriptions.completion().average(:rating)
     if @average == nil
       @average = 0.0
-    end
-     @subscriptions.each do |s| 
-      if s.member_id == @current_member.id
-        @current_member.credits = s.course.credits
-        break
-      end
-    end
+    end 
    
   end
 

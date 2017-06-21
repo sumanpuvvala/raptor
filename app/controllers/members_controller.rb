@@ -8,15 +8,15 @@ class MembersController < ApplicationController
   # GET /members.json
   def index
     @streams = NamedList.where(list_name: 'stream').select(:entry_name).order(:entry_name)
-    @managers = Member.all.select(:manager).distinct().order(:manager)
-    @titles = Member.all.select(:title).distinct().order(:title)
+    @managers = Member.active().select(:manager).distinct().order(:manager)
+    @titles = Member.active().select(:title).distinct().order(:title)
     
     @member_name = params[:member_name]
     @stream = params[:stream]
     @title = params[:title]
     @manager = params[:manager]
 
-    @members = Member.where(nil)
+    @members = Member.where(nil).active()
     @members = @members.name_includes(@member_name) if params[:member_name].present?
     @members = @members.stream(@stream) if params[:stream].present?
     @members = @members.title(@title) if params[:title].present?
@@ -45,13 +45,19 @@ class MembersController < ApplicationController
   # GET /members/1.json
   def show
     @teammembers = Teammember.where(member_id: params[:id]).includes(:team)
-    @teams = Team.where(member_id: params[:id])
-    @courses = Course.where(member_id: params[:id]).includes(:topic).order(:title)
+    @teams = Team.active().where(member_id: params[:id])
+    @courses = Course.active().where(member_id: params[:id]).includes(:topic).order(:title) 
     @interests = Interest.where(member_id: params[:id])
     @subscriptions = Subscription.where(member_id: params[:id]).includes(:course).order(:due)
 
     @total_credits = @subscriptions.joins(:course).sum(:credits)
     @completed_credits = @subscriptions.completion().joins(:course).sum(:credits)
+
+    @subscriptions.each do |m| 
+      if m.status != "Completed" && m.due < Date.today()
+        m.overdue = true
+      end
+    end
 
   end
 
@@ -77,13 +83,13 @@ class MembersController < ApplicationController
     @member = Member.new
 
     @streams = NamedList.where(list_name: 'stream').select(:entry_name).order(:entry_name)
-    @managers = Member.all.select(:manager).distinct().order(:manager)
+    @managers = Member.active().select(:manager).distinct().order(:manager)
   end
 
   # GET /members/1/edit
   def edit
     @streams = NamedList.where(list_name: 'stream').select(:entry_name).order(:entry_name)
-    @managers = Member.all.select(:manager).distinct().order(:manager)
+    @managers = Member.active().select(:manager).distinct().order(:manager)
   end
 
   # POST /members
@@ -140,6 +146,6 @@ class MembersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def member_params
-      params.require(:member).permit(:name, :title, :stream, :manager, :is_lead)
+      params.require(:member).permit(:name, :title, :stream, :manager, :is_lead, :active)
     end
 end

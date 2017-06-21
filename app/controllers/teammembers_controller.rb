@@ -17,8 +17,8 @@ class TeammembersController < ApplicationController
   # GET /teammembers/new
   def new
     @teammember = Teammember.new
-    @teams = Team.all.order(:name)
-    @members = Member.all.order(:name)
+    @teams = Team.active().order(:name)
+    @members = Member.active().order(:name)
     @teammember.team_id = params[:team_id]
     if cookies[:member_id] != ""
       @teammember.member_id = cookies[:member_id]
@@ -30,8 +30,8 @@ class TeammembersController < ApplicationController
 
   # GET /teammembers/1/edit
   def edit
-    @teams = Team.all.order(:name)
-    @members = Member.all.order(:name)
+    @teams = Team.active().order(:name)
+    @members = Member.active().order(:name)
   end
 
   # POST /teammembers

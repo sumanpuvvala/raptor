@@ -7,13 +7,13 @@ class CategoriesController < ApplicationController
   # GET /categories
   # GET /categories.json
   def index
-    @categories = Category.all.order(:name)
+    @categories = Category.active().order(:name)
   end
 
   # GET /categories/1
   # GET /categories/1.json
   def show
-    @topics = Topic.where(category_id: params[:id]).includes(:classification, :team).order(:name)
+    @topics = Topic.active().where(category_id: params[:id]).includes(:classification, :team).order(:name)
   end
 
   # GET /categories/new
@@ -79,6 +79,6 @@ class CategoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def category_params
-      params.require(:category).permit(:name)
+      params.require(:category).permit(:name, :active)
     end
 end

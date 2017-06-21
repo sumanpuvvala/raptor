@@ -204,9 +204,25 @@ p a
   text-align: left;
 }
 
-td > form > input[type="submit"]
-{
+td > form > input[type="submit"] {
   color: rgba(192, 0, 0, 0.7);
+}
+
+.btn-remove {
+  color: rgba(150, 136, 0, 0.7);
+}
+
+
+.td-completed,
+.td-completed > p {
+  text-decoration: line-through;
+/*  color: rgba(32, 160, 32, 0.9); */
+}
+
+.td-overdue,
+.td-overdue > p {
+  color: rgba(255, 0, 0, 0.9);
+/*  color: rgba(0, 0, 0, 0.7); */
 }
 
 ul#navigation {

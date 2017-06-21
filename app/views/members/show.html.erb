@@ -2,25 +2,25 @@
 
 <h2>
   Member: <%= @member.name %>
-  <% if @member.is_lead %>
-   <strong>(Lead)</strong>
-  <% end %>
 </h2>
 
+<div style="width: 100%; float:left">
+  <div style="width: 50%; float:left">
 <p>
-  <strong>Title:</strong>
-  <%= @member.title %>
+  <strong>Title:</strong> <%= @member.title %> <% if @member.is_lead %> <strong>(Lead)</strong> <% end %>
 </p>
 
 <p>
-  <strong>Stream:</strong>
-  <%= @member.stream %>
-</p>
+  <strong>Stream:</strong> <%= @member.stream %> </p>
+  </div>
+  <div style="width: 50%; float:right">
 
 <p>
   <strong>Manager:</strong>
   <%= @member.manager %>
 </p> 
+  </div>
+</div>
 
 <%= link_to 'Back', members_path %>
 <% if cookies[:member_id].to_s == @member.id.to_s or (@current_member != nil and @current_member.is_lead)%>
@@ -45,8 +45,8 @@
       <th>Credits</th>
       <th>Due Date</th>
       <th>Status</th>
-      <th>Rating</th>
       <th>Comment</th>
+      <th></th>
       <th colspan="2"></th>
     </tr>
   </thead>
@@ -56,15 +56,20 @@
       <tr>
         <td><%= link_to subscription.course.title, subscription.course %></td>
         <td><%= subscription.course.credits %></td>
-        <td><% if subscription.due != nil %>
-          <%= l(subscription.due, format: :short) %>
-        <% end %></td>
-        <td><%= subscription.status %></td>
-        <td><%= subscription.rating %></td>
+        <td <% if (subscription.overdue == true) %> class="td-overdue" <% end %> >
+          <% if subscription.due != nil %>
+            <%= l(subscription.due, format: :short) %>
+          <% end %>
+        </td>
+        <td <% if (subscription.status == "Completed") %> class="td-completed" <% end %> > 
+          <%= subscription.status %>
+        </td>
         <td><description><%= subscription.comment %></description></td>
+        <td><% if subscription.rating != nil %> 
+          <div class="star-ratings-sprite"><span style="width:<%= subscription.rating * 20%>%" class="star-ratings-sprite-rating"></span></div>
+        <% end %></td> 
         <% if cookies[:member_id].to_s == @member.id.to_s or (@current_member != nil and @current_member.is_lead) %>
           <td><%= link_to 'Edit', edit_subscription_path(subscription) %></td> 
-          <td><%= button_to 'Remove', {:controller => :subscriptions, action: :destroy, id: subscription.id}, onclick: 'return confirm("Are you sure?")', :method => :delete%></td> 
         <% end %>
       </tr>
     <% end %>

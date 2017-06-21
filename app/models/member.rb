@@ -14,4 +14,5 @@ class Member < ApplicationRecord
 	scope :stream, -> (stream) { where stream: stream }
 	scope :manager, -> (manager) { where manager: manager }
 	scope :title, -> (title) { where title: title }
+	scope :active, -> () { where active: true }
 end

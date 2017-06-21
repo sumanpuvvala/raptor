@@ -1,5 +1,9 @@
 <h2>Editing Subscription</h2>
 
 <%= render 'form', subscription: @subscription %>
+
+<% if @current_member != nil and (@current_member.is_lead or @current_member.id = @subscription.member_id) and @subscription.status != 'Completed' %>
+<%= button_to 'Remove', {:controller => :subscriptions, action: :destroy, id: @subscription.id}, {onclick: 'return confirm("Are you sure?")', class: 'btn-red', :method => :delete}%>
+<% end %>
 <br>
 <%= link_to 'Back', member_path(@subscription.member) %>
