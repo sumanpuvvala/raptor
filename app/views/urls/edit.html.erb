@@ -1,6 +1,13 @@
-<h2>Editing Url</h2>
+<h2>Editing Material</h2>
 
 <%= render 'form', url: @url %>
+
+<% if @current_member != nil and (@current_member.is_lead) %>
+<%= button_to 'Remove', {:controller => :urls, action: :destroy, id: @url.id}, {onclick: 'return confirm("Are you sure?")', class: 'btn-red', :method => :delete}%>
+<% end %>
 <br>
-<%= link_to 'Show', @url %> |
-<%= link_to 'Back', urls_path %>
+<% if @url.entity == 'course' %>
+	<%= link_to 'Back', course_path(id: @url.entity_id) %>
+<% else %>
+	<%= link_to 'Back', urls_path %>
+<% end %>

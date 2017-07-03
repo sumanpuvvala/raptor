@@ -36,8 +36,6 @@ class CourseLinksController < ApplicationController
   def create
     @course_link = CourseLink.new(course_link_params)
 
-    logger.debug @course_link.to_yaml
- 
 #    @course = Course.find(id: @course_link.course_id)
 #    @child_course = Course.find(id: @course_link.child_course_id)
 

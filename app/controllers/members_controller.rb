@@ -54,7 +54,7 @@ class MembersController < ApplicationController
     @completed_credits = @subscriptions.completion().joins(:course).sum(:credits)
 
     @subscriptions.each do |m| 
-      if m.status != "Completed" && m.due < Date.today()
+      if m.status != "Completed" && m.due != nil && m.due < Date.today()
         m.overdue = true
       end
     end

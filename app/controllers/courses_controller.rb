@@ -34,17 +34,24 @@ class CoursesController < ApplicationController
       c.rating = @subscriptions[c.id]
     end
 
-  end
+   end
 
   # GET /courses/1
   # GET /courses/1.json
   def show
+    @urls = Url.where(entity_id: params[:id]).where(entity: "course")
     @subscriptions = Subscription.where(course_id: params[:id]).includes(:member)
     @average = @subscriptions.completion().average(:rating)
     if @average == nil
       @average = 0.0
     end 
    
+    if @current_member != nil
+      @subscribed = @subscriptions.where(member_id: @current_member.id)
+      if @subscribed.present?
+        @current_member.credits = @course.credits
+      end
+    end
   end
 
   # GET /courses/new
@@ -54,18 +61,18 @@ class CoursesController < ApplicationController
     @course.member_id = params[:member_id] if params[:member_id].present?
     @course.member_id = @current_member.id if @current_member.present?
 
-    @topics = Topic.all.order(:name)
+    @topics = Topic.active().order(:name)
     @difficulties = NamedList.where(list_name: 'difficulty').select(:entry_name).order(:entry_name)
     @course_types = NamedList.where(list_name: 'course_type').select(:entry_name).order(:entry_name)
-    @members = Member.all.order(:name)
+    @members = Member.active().order(:name)
   end
 
   # GET /courses/1/edit
   def edit
-    @topics = Topic.all.order(:name)
+    @topics = Topic.active().order(:name)
     @difficulties = NamedList.where(list_name: 'difficulty').select(:entry_name).order(:entry_name)
     @course_types = NamedList.where(list_name: 'course_type').select(:entry_name).order(:entry_name)
-    @members = Member.all.order(:name)
+    @members = Member.active().order(:name)
   end
 
   # POST /courses

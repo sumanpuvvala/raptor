@@ -7,6 +7,7 @@ class Course < ApplicationRecord
 	has_many :subscriptions
 
 	has_many :course_links
+	has_many :urls, :class_name => "Urls", :foreign_key => :entity_id
 	has_many :child_courses, :through => :course_links
 
 	has_many :parent_course_links, :class_name => "CourseLink", :foreign_key => :child_course_id
