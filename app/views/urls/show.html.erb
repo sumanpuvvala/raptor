@@ -15,5 +15,14 @@
   <%= @url.url_type %>
 </p>
 
+<p>
+  <strong>Description:</strong>
+  <%= @url.details %>
+</p>
+
 <%= link_to 'Edit', edit_url_path(@url) %> |
-<%= link_to 'Back', urls_path %>
+<% if @url.entity == 'course' %>
+	<%= link_to 'Back', course_path(id: @url.entity_id) %>
+<% else %>
+	<%= link_to 'Back', urls_path %>
+<% end %>

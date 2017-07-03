@@ -1,5 +1,6 @@
 class UrlsController < ApplicationController
   before_action :set_url, only: [:show, :edit, :update, :destroy]
+  before_action :current_member, only: [:show, :edit, :new]
 
   layout 'standard'
   
@@ -17,10 +18,26 @@ class UrlsController < ApplicationController
   # GET /urls/new
   def new
     @url = Url.new
+
+    @url.entity_id = params[:entity_id] if params[:entity_id].present?
+    @url.entity = params[:entity] if params[:entity].present?
+
+    if @url.entity == 'course'
+      @course = Course.find(@url.entity_id)
+      @url.entity_name = @course.title
+    end
+
+    @url_types = NamedList.where(list_name: 'course_type').select(:entry_name).order(:entry_name)
   end
 
   # GET /urls/1/edit
   def edit
+    if @url.entity == 'course'
+      @course = Course.find(@url.entity_id)
+      @url.entity_name = @course.title
+    end
+
+    @url_types = NamedList.where(list_name: 'course_type').select(:entry_name).order(:entry_name)
   end
 
   # POST /urls
@@ -30,8 +47,14 @@ class UrlsController < ApplicationController
 
     respond_to do |format|
       if @url.save
-        format.html { redirect_to @url, notice: 'Url was successfully created.' }
-        format.json { render :show, status: :created, location: @url }
+        if @url.entity == 'course'
+          @course = Course.find(@url.entity_id)
+          format.html { redirect_to @course, notice: 'Url was successfully created.' }
+          format.json { render :show, status: :created, location: @url }
+        else
+          format.html { redirect_to @url, notice: 'Url was successfully created.' }
+          format.json { render :show, status: :created, location: @url }
+        end
       else
         format.html { render :new }
         format.json { render json: @url.errors, status: :unprocessable_entity }
@@ -44,8 +67,14 @@ class UrlsController < ApplicationController
   def update
     respond_to do |format|
       if @url.update(url_params)
-        format.html { redirect_to @url, notice: 'Url was successfully updated.' }
-        format.json { render :show, status: :ok, location: @url }
+        if @url.entity == 'course'
+          @course = Course.find(@url.entity_id)
+          format.html { redirect_to @course, notice: 'Url was successfully updated.' }
+          format.json { render :show, status: :ok, location: @url }
+        else
+          format.html { redirect_to @url, notice: 'Url was successfully updated.' }
+          format.json { render :show, status: :ok, location: @url }
+        end
       else
         format.html { render :edit }
         format.json { render json: @url.errors, status: :unprocessable_entity }
@@ -58,8 +87,14 @@ class UrlsController < ApplicationController
   def destroy
     @url.destroy
     respond_to do |format|
-      format.html { redirect_to urls_url, notice: 'Url was successfully destroyed.' }
-      format.json { head :no_content }
+       if @url.entity == 'course'
+          @course = Course.find(@url.entity_id)
+          format.html { redirect_to @course, notice: 'Url was successfully destroyed.' }
+          format.json { head :no_content }
+        else
+          format.html { redirect_to urls_url, notice: 'Url was successfully destroyed.' }
+          format.json { head :no_content }
+        end
     end
   end
 
@@ -69,8 +104,14 @@ class UrlsController < ApplicationController
       @url = Url.find(params[:id])
     end
 
+    def current_member
+      if cookies[:member_id] != "" and cookies[:member_id] != nil
+        @current_member = Member.find(cookies[:member_id])
+      end
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def url_params
-      params.require(:url).permit(:entity, :url, :url_type)
+      params.require(:url).permit(:entity, :url, :url_type, :entity_id, :url_type, :details)
     end
 end

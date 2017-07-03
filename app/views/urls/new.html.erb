@@ -1,5 +1,9 @@
-<h1>New Url</h1>
+<h2>New Material</h2>
 
 <%= render 'form', url: @url %>
 <br>
-<%= link_to 'Back', urls_path %>
+<% if @url.entity == 'course' %>
+	<%= link_to 'Back', course_path(id: @url.entity_id) %>
+<% else %>
+	<%= link_to 'Back', urls_path %>
+<% end %>

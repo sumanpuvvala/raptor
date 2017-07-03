@@ -61,7 +61,7 @@
             <%= l(subscription.due, format: :short) %>
           <% end %>
         </td>
-        <td <% if (subscription.status == "Completed") %> class="td-completed" <% end %> > 
+        <td <% if (subscription.status == "Completed" or subscription.status == "Exempted") %> class="td-completed" <% end %> > 
           <%= subscription.status %>
         </td>
         <td><description><%= subscription.comment %></description></td>

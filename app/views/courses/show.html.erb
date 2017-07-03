@@ -69,43 +69,73 @@
 </p>
 <br>
 
+<% if @urls.present? %>
+  <strong>Other Material:</strong>
+</p>
+<table>
+  <tbody>
+    <% for url in @urls %>
+      <tr>
+        <td><%= url.details %></td>
+        <td><a class="url" href="<%= url.url %>" target="_blank"><%= url.url_type %></a></td>
+        <!--td><a class="url" href="<%= url.url %>" target="_blank"><%= url.url %></a></td-->
+        <% if (@current_member != nil and @current_member.is_lead) %>
+          <td><%= link_to 'Edit', edit_url_path(url) %></td> 
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>
+
 <%= link_to 'Back', courses_path %>
 <%= link_to 'Edit Course', edit_course_path(@course) %> 
 <%= link_to 'Add Sub Course', new_course_link_path(course_id: @course.id) %> 
+<%= link_to 'Add Material', new_url_path(entity_id: @course.id, entity: 'course') %> 
 <% if @current_member != nil and @current_member.credits == nil %>
   <%= link_to 'Subscribe', new_subscription_path(course_id: @course.id) %> 
 <% end %>
 <!--%= link_to 'Create Copy', copy_course_path(@course) %--> 
 
-<h2>Related Courses</h2>
+<% if @course.course_links.present? %>
+  <h2>Related Courses</h2>
 
-<table>
-  <thead>
-    <tr>
-      <th>Course</th>
-      <th>Type</th>
-      <th></th>
-    </tr>
-  </thead>
+  <table>
+    <thead>
+      <tr>
+        <th>Course</th>
+        <th>Type</th>
+        <th>Credits</th>
+        <th>Relation</th>
+        <th></th>
+      </tr>
+    </thead>
 
-  <tbody>
-    <% for course_link in @course.course_links %>
-      <tr>
-        <td><%= link_to course_link.child_course.title, course_link.child_course %></td>
-        <td>Courses</td>
-        <% if cookies[:member_id].to_s == @course.member.id.to_s or (@current_member != nil and @current_member.is_lead) %>
-          <td><%= button_to 'Remove', {:controller => :course_links, action: :destroy, id: course_link.id},  onclick: 'return confirm("Are you sure?")', :method => :delete%></td>
-        <% end %>
-      </tr>
-    <% end %>
-    <% for course in @course.parent_courses %>
-      <tr>
-        <td><%= link_to course.title, course %></td>
-        <td>Curriculum</td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+    <tbody>
+      <% for course_link in @course.course_links %>
+        <tr>
+          <td><%= link_to course_link.child_course.title, course_link.child_course %></td>
+          <td><%= course_link.child_course.course_type %></td>
+          <td><%= course_link.child_course.credits %></td>
+          <td><% if course_link.link_type == 'Curriculum' %> Component
+              <% elsif course_link.link_type == 'Training' %> 
+              <% elsif course_link.link_type == 'Precedes' %> Follows
+              <% end %>
+          </td>
+          <% if cookies[:member_id].to_s == @course.member.id.to_s or (@current_member != nil and @current_member.is_lead) %>
+            <td><%= button_to 'Remove', {:controller => :course_links, action: :destroy, id: course_link.id},  onclick: 'return confirm("Are you sure?")', :method => :delete%></td>
+          <% end %>
+        </tr>
+      <% end %>
+      <% for course_link in @course.parent_course_links %>
+        <tr>
+          <td><%= link_to course_link.course.title, course_link.course %></td>
+          <td><%= course_link.link_type%></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
 
 <h2>Subscriptions <div class="star-ratings-sprite"><span style="width:<%=@average * 20%>%" class="star-ratings-sprite-rating"></span></div> </h2>
 

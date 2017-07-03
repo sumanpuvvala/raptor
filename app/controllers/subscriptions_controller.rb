@@ -68,6 +68,19 @@ class SubscriptionsController < ApplicationController
   def create
     @subscription = Subscription.new(subscription_params)
 
+    if @subscription.course.course_type == 'Training'
+      @course_links = CourseLink.where(course_id: @subscription.course.id)
+
+      @course_links.each do |c| 
+        @child_course = Course.find(c.child_course_id)
+        @child_subscription = Subscription.new(subscription_params)
+        @child_subscription.course_id = @child_course.id
+        @child_subscription.save
+
+        logger.debug 'subscribed to ' + @child_course.title
+      end
+    end
+
     respond_to do |format|
       if @subscription.save
         format.html { redirect_to @subscription.member, notice: 'Subscription was successfully created.' }
