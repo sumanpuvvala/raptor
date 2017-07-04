@@ -39,8 +39,9 @@ class CoursesController < ApplicationController
   # GET /courses/1
   # GET /courses/1.json
   def show
-    @urls = Url.where(entity_id: params[:id]).where(entity: "course")
+    @urls = Url.where(entity_id: params[:id]).where(entity: "course").order(:details)
     @subscriptions = Subscription.where(course_id: params[:id]).includes(:member)
+
     @average = @subscriptions.completion().average(:rating)
     if @average == nil
       @average = 0.0

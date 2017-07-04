@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <h2>
-  Course: <%= @course.title %>
+  <%= @course.course_type %>: <%= @course.title %>
 </h2>
 
 <div style="width: 100%; float:left">
@@ -70,7 +70,7 @@
 <br>
 
 <% if @urls.present? %>
-  <strong>Other Material:</strong>
+  <strong>Course Material:</strong>
 </p>
 <table>
   <tbody>
@@ -100,7 +100,7 @@
 <!--%= link_to 'Create Copy', copy_course_path(@course) %--> 
 
 <% if @course.course_links.present? %>
-  <h2>Related Courses</h2>
+  <h2>Linked Courses</h2>
 
   <table>
     <thead>
@@ -121,18 +121,12 @@
           <td><%= course_link.child_course.credits %></td>
           <td><% if course_link.link_type == 'Curriculum' %> Component
               <% elsif course_link.link_type == 'Training' %> 
-              <% elsif course_link.link_type == 'Precedes' %> Follows
+              <% elsif course_link.link_type == 'Precedes' %> Requires
               <% end %>
           </td>
           <% if cookies[:member_id].to_s == @course.member.id.to_s or (@current_member != nil and @current_member.is_lead) %>
             <td><%= button_to 'Remove', {:controller => :course_links, action: :destroy, id: course_link.id},  onclick: 'return confirm("Are you sure?")', :method => :delete%></td>
           <% end %>
-        </tr>
-      <% end %>
-      <% for course_link in @course.parent_course_links %>
-        <tr>
-          <td><%= link_to course_link.course.title, course_link.course %></td>
-          <td><%= course_link.link_type%></td>
         </tr>
       <% end %>
     </tbody>
@@ -168,3 +162,26 @@
     <% end %>
   </tbody>
 </table>
+
+<% if @course.parent_course_links.present? %>
+  <h2>Also included in</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Course</th>
+        <th>Type</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% for course_link in @course.parent_course_links %>
+        <tr>
+          <td><%= link_to course_link.course.title, course_link.course %></td>
+          <td><%= course_link.link_type%></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
