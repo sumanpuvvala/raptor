@@ -4,10 +4,11 @@ class Course < ApplicationRecord
 
 	belongs_to :member
 	belongs_to :topic
+
 	has_many :subscriptions
+	has_many :urls, :class_name => "Urls", :foreign_key => :entity_id
 
 	has_many :course_links
-	has_many :urls, :class_name => "Urls", :foreign_key => :entity_id
 	has_many :child_courses, :through => :course_links
 
 	has_many :parent_course_links, :class_name => "CourseLink", :foreign_key => :child_course_id
