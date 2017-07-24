@@ -15,4 +15,16 @@ class Member < ApplicationRecord
 	scope :manager, -> (manager) { where manager: manager }
 	scope :title, -> (title) { where title: title }
 	scope :active, -> () { where active: true }
+
+before_destroy :clear_children
+
+protected
+  def clear_children
+    teams.clear
+    teammembers.destroy_all
+    courses.clear
+    subscriptions.destroy_all
+    interests.destroy_all
+  end
+
 end

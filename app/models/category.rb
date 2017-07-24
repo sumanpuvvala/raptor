@@ -1,5 +1,5 @@
 class Category < ApplicationRecord
-	has_many :topic
+	has_many :topic, dependent: :restrict_with_exception
 
 	scope :active, -> () { where active: true }
 end
