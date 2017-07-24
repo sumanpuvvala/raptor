@@ -49,7 +49,7 @@
 
   <div class="field">
     <%= f.label :url_type %>
-    <%= f.collection_select(:status, @url_types, :entry_name, :entry_name, {selected: url.url_type, prompt: true}) %></p>
+    <%= f.collection_select(:url_type, @url_types, :entry_name, :entry_name, {selected: url.url_type, prompt: true}) %></p>
   </div>
 
   <div class="actions">

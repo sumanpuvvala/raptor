@@ -53,6 +53,7 @@ class CoursesController < ApplicationController
       end
     end
 
+
     if @current_member != nil
       @subscribed = @subscriptions.where(member_id: @current_member.id)
       if @subscribed.present?
