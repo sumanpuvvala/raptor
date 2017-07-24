@@ -12,9 +12,9 @@
   <thead>
     <tr>
       <th>Name</th>
+      <th>Courses</th>
       <th>Classification</th>
-      <th>Team</th>
-      <th colspan="1"></th>
+      <th>Description</th>
     </tr>
   </thead>
 
@@ -22,8 +22,9 @@
     <% @topics.each do |topic| %>
       <tr>
         <td><%= link_to topic.name, topic_path(topic) %></td>
+        <td><%= topic.total_courses() %></td>
         <td><%= topic.classification.name %></td>
-        <td><% if topic.team != nil %><%= topic.team.name %><% end %></td>
+        <td><%= topic.details %></td>
       </tr>
     <% end %>
   </tbody>

@@ -46,15 +46,18 @@ class MembersController < ApplicationController
   def show
     @teammembers = Teammember.where(member_id: params[:id]).includes(:team)
     @teams = Team.active().where(member_id: params[:id])
+
     @courses = Course.active().where(member_id: params[:id]).includes(:topic).order(:title) 
-    @interests = Interest.where(member_id: params[:id])
-    @subscriptions = Subscription.where(member_id: params[:id]).includes(:course).order(:due)
+    @interests = Interest.where(member_id: params[:id]).includes(:topic)
+    @subscriptions = Subscription.where(member_id: params[:id]).includes(:course).order("status DESC", :due)
+    @completed_subscriptions = @subscriptions.completion()
+    @incomplete_subscriptions = @subscriptions.incomplete()
 
     @total_credits = @subscriptions.joins(:course).sum(:credits)
-    @completed_credits = @subscriptions.completion().joins(:course).sum(:credits)
+    @completed_credits = @completed_subscriptions.joins(:course).sum(:credits)
 
-    @subscriptions.each do |m| 
-      if m.status != "Completed" && m.due != nil && m.due < Date.today()
+    @incomplete_subscriptions.each do |m| 
+      if m.due != nil && m.due < Date.today()
         m.overdue = true
       end
     end
@@ -65,7 +68,7 @@ class MembersController < ApplicationController
 
     cookies[:member_name] = @member.name
     cookies[:member_id] = @member.id
-    puts cookies[:member_id]
+  #  puts cookies[:member_id]
 
     redirect_to @member
   end

@@ -21,4 +21,21 @@ class Course < ApplicationRecord
 	scope :course_type, -> (course_type) { where course_type: course_type }
 	scope :paid, -> () { where("cost_course not in (\"0\", \"-\", \"\")") }
 	scope :active, -> () { where active: true }
+
+  def average_rating
+    self.subscriptions.average(:rating)
+  end
+
+before_destroy :clear_children
+
+protected
+  def clear_children
+    subscriptions.destroy_all
+    course_links.destroy_all
+    parent_course_links.destroy_all
+
+    @urls = Url.where(entity_id: self.id).where(entity: "course")
+    @urls.destroy_all
+  end
+
 end
