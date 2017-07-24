@@ -42,11 +42,10 @@
     <tr>
       <th>Title</th>
       <th>Course type</th>
-      <th>Contributor</th>
       <th>University</th>
       <th>Time estimate</th>
       <th>Credits</th>
-      <th></th>
+      <th colspan="2">Subscriptions</th>
     </tr>
   </thead>
 
@@ -55,32 +54,23 @@
       <tr>
         <td><%= link_to course.title, course %></td>
         <td><%= course.course_type %></td>
-        <td><%= course.member.name %></td>
         <td><%= course.university %></td>
         <td><%= course.time_estimate %></td>
         <td><%= course.credits %></td>
-        <td><% if course.rating != nil %> 
-          <div align="left" class="star-ratings-sprite"><span style="width:<%= course.rating * 20%>%" class="star-ratings-sprite-rating"></span></div>
-        <% end %></td> 
+        <% if course.subscriptions.present? %> 
+          <td><%= course.subscriptions.count() %></td>
+          <td> 
+          <% if course.average_rating.present? %> 
+            <div align="left" class="star-ratings-sprite"><span style="width:<%= course.average_rating * 20%>%" class="star-ratings-sprite-rating"></span></div> 
+          <% end %>
+          </td> 
+        <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<h2>Interested</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th>Member</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @interests.each do |interest| %>
-      <tr>
-        <td><%= link_to interest.member.name, interest.member %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<h2>Interested Members</h2>
+<% @interests.each do |interest| %>
+  <%= link_to interest.member.name, interest.member, :style=>'padding-right:2em' %>
+<% end %>

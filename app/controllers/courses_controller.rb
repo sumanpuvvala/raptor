@@ -40,13 +40,19 @@ class CoursesController < ApplicationController
   # GET /courses/1.json
   def show
     @urls = Url.where(entity_id: params[:id]).where(entity: "course").order(:details)
-    @subscriptions = Subscription.where(course_id: params[:id]).includes(:member)
+    @subscriptions = Subscription.where(course_id: params[:id]).includes(:member).order("status DESC", :due)
 
     @average = @subscriptions.completion().average(:rating)
     if @average == nil
       @average = 0.0
     end 
    
+    @subscriptions.each do |m| 
+      if m.due != nil && m.due < Date.today()
+        m.overdue = true
+      end
+    end
+
     if @current_member != nil
       @subscribed = @subscriptions.where(member_id: @current_member.id)
       if @subscribed.present?

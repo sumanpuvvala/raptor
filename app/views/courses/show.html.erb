@@ -99,6 +99,46 @@
 <% end %>
 <!--%= link_to 'Create Copy', copy_course_path(@course) %--> 
 
+<h2>Subscriptions <div class="star-ratings-sprite"><span style="width:<%=@average * 20%>%" class="star-ratings-sprite-rating"></span></div> </h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Member</th>
+      <th>Status</th>
+      <th>Due Date</th>
+      <th>Comment</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @subscriptions.each do |subscription| %>
+      <tr>
+        <td>
+          <% if subscription.member.active == true %>
+            <%= link_to subscription.member.name, subscription.member %>
+          <% else %>
+            <%= link_to subscription.member.name, subscription.member, :class=> "td-completed" %>
+          <% end %>
+        </td>
+        <td><%= subscription.status %></td>
+        <td <% if (subscription.overdue == true) %> class="td-overdue" <% end %> >
+          <% if subscription.due != nil %>
+            <%= l(subscription.due, format: :short) %>
+          <% end %>
+        </td>
+        <td><description><%= subscription.comment %></description></td>
+        <td>
+          <% if subscription.rating != nil %> 
+            <div class="star-ratings-sprite"><span style="width:<%= subscription.rating * 20%>%" class="star-ratings-sprite-rating"></span></div> 
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
 <% if @course.course_links.present? %>
   <h2>Linked Courses</h2>
 
@@ -132,36 +172,6 @@
     </tbody>
   </table>
 <% end %>
-
-<h2>Subscriptions <div class="star-ratings-sprite"><span style="width:<%=@average * 20%>%" class="star-ratings-sprite-rating"></span></div> </h2>
-
-<table>
-  <thead>
-    <tr>
-      <th>Member</th>
-      <th>Rating</th>
-      <th>Status</th>
-      <th>Comment</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @subscriptions.each do |subscription| %>
-      <tr>
-        <td>
-          <% if subscription.member.active == true %>
-            <%= link_to subscription.member.name, subscription.member %>
-          <% else %>
-            <%= subscription.member.name %>
-          <% end %>
-        </td>
-        <td><%= subscription.rating %></td>
-        <td><%= subscription.status %></td>
-        <td><description><%= subscription.comment %></description></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
 
 <% if @course.parent_course_links.present? %>
   <h2>Also included in</h2>

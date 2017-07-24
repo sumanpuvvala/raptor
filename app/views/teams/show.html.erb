@@ -22,6 +22,9 @@
   <thead>
     <tr>
       <th>Member</th>
+      <th>Stream</th>
+      <th>Credits</th>
+      <th>Credits Earned</th>
     </tr>
   </thead>
 
@@ -29,6 +32,9 @@
     <% @teammembers.each do |teammember| %>
       <tr>
         <td><%= link_to teammember.member.name, member_path(teammember.member) %></td> 
+        <td><%= teammember.member.stream %></td>
+        <td><%= teammember.member.credits %></td>
+        <td><%= teammember.member.credits_earned %></td>
         <% if @current_member != nil and (@current_member.id == teammember.member.id or @current_member.is_lead or @current_member.id == @team.member.id)%> 
           <td><%= button_to 'Remove', {:controller => :teammembers, action: :destroy, id: teammember.id},  onclick: 'return confirm("Are you sure?")', :method => :delete %></td> 
         <% end %>
@@ -37,6 +43,7 @@
   </tbody>
 </table>
 
+<% if @topics.present? %>
 <p>
 <h2>Topics</h2>
 
@@ -61,4 +68,5 @@
     <% end %>
   </tbody>
 </table>
+<% end %>
 

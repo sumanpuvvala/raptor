@@ -14,8 +14,18 @@ class TeamsController < ApplicationController
   # GET /teams/1.json
   def show
 #    @teams = Team.find(params[:id])
-    @teammembers = Teammember.where(team_id: params[:id]).order(:team_id).includes(:member)
+    @teammembers = Teammember.where(team_id: params[:id]).order(:team_id).includes(:member => {:subscriptions => :course})
     @topics = Topic.active().where(team_id: params[:id]).order(:name).includes(:category, :classification)
+
+    @teammembers.each do |m|
+      m.member.credits_earned = 0
+      m.member.subscriptions.each do |s|
+        m.member.credits = s.course.credits
+        if (s.status = 'Completed' or s.status = 'Certified') and s.course.credits != nil
+          m.member.credits_earned += s.course.credits
+        end
+      end
+    end
   end
 
   # GET /teams/new

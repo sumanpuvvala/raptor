@@ -36,7 +36,7 @@ layout 'standard'
   # GET /topics/1
   # GET /topics/1.json
   def show
-    @courses = Course.active().where(topic_id: params[:id]).includes(:member)
+    @courses = Course.active().where(topic_id: params[:id]).includes(:member, :subscriptions)
 
     @interests = Interest.where(topic_id: params[:id])
 
