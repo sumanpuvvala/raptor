@@ -19,10 +19,14 @@ class TeamsController < ApplicationController
 
     @teammembers.each do |m|
       m.member.credits_earned = 0
+      m.member.credits = 0
       m.member.subscriptions.each do |s|
-        m.member.credits = s.course.credits
-        if (s.status = 'Completed' or s.status = 'Certified') and s.course.credits != nil
-          m.member.credits_earned += s.course.credits
+        if s.course.credits != nil
+          if (s.status == 'Completed' or s.status == 'Certified') 
+            m.member.credits_earned += s.course.credits
+          else
+            m.member.credits += s.course.credits
+          end
         end
       end
     end

@@ -13,12 +13,14 @@
       <div id = "container">
          
          <div id = "header">
-            <h1><%= Rails.configuration.application_name %> <img src="/images/jda.png" alt="JDA" height="66" style="float: left;"></h1>
+            <h1><%= Rails.configuration.application_name %><a href="/dashboard" class="imgurl"><img src="/images/jda.png" alt="JDA" height="66" style="float: left;"></a></h1>
             <ul id = "navigation"> 
                <li><%= link_to 'Categories', categories_path %></li>
                <li><%= link_to 'Topics', topics_path %></li>
                <li><%= link_to 'Courses', courses_path %></li>
-               <li><%= link_to 'Members', members_path %></li>
+               <% if cookies[:member_id].to_s == "" %> 
+                 <li><%= link_to 'Members', members_path %></li>
+               <% end %>
                <li><a href="/maintenance">Others...</a></li>
                <li><a href="/help">Help</a></li>
                <% if cookies[:member_id].to_s != "" %> 

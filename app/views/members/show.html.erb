@@ -40,7 +40,6 @@
       <th>Status</th>
       <th>Comment</th>
       <th></th>
-      <th colspan="2"></th>
     </tr>
   </thead>
 
@@ -58,9 +57,6 @@
           <%= subscription.status %>
         </td>
         <td><description><%= subscription.comment %></description></td>
-        <td><% if subscription.rating != nil %> 
-          <div class="star-ratings-sprite"><span style="width:<%= subscription.rating * 20%>%" class="star-ratings-sprite-rating"></span></div>
-        <% end %></td> 
         <% if cookies[:member_id].to_s == @member.id.to_s or (@current_member != nil and @current_member.is_lead) %>
           <td><%= link_to 'Edit', edit_subscription_path(subscription) %></td> 
         <% end %>

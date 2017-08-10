@@ -2,8 +2,11 @@
   <ul id = "navigation">
 	<li><%= link_to 'Teams', teams_path %></li> 
 	<li><%= link_to 'Classifications', classifications_path %></li> 
-<% if @current_member != nil and @current_member.is_lead %>
-	<li><%= link_to 'Named Lists', named_lists_path %></li>
-<% end %>
+	<% if cookies[:member_id].to_s != "" %> 
+		<li><%= link_to 'Members', members_path %></li> 
+	<% end %> 
+	<% if @current_member != nil and @current_member.is_lead %> 
+		<li><%= link_to 'Named Lists', named_lists_path %></li> 
+	<% end %>
   </ul>
 </div>
