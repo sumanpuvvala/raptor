@@ -256,9 +256,22 @@ ul#navigation > li.current_user > a {
   font-style: italic;
 }
 
-.url {
+a.url {
   text-align: left;
   display: inline-block;
+  padding: 0px;
+
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.16), 0 0 0 0 rgba(0, 0, 0, 0.12);
+ 
+  background-color: transparent;
+  font-weight: 500;
+  font-size: 120%;
+  color: rgba(61,90,254, 1); /* #3F51B5 (63,81,181) #3D5AFE */
+  text-decoration: none;
+  text-transform: none;
+}
+
+a.imgurl {
   padding: 0px;
 
   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.16), 0 0 0 0 rgba(0, 0, 0, 0.12);

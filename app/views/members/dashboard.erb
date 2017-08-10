@@ -1,0 +1,93 @@
+<h2>Recently Rated Courses</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Course</th>
+      <th>Member</th>
+      <th></th>
+      <th>Comment</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @newratings.each do |subscription| %>
+      <tr>
+        <td>
+          <% if subscription.course.active == true %>
+            <%= link_to subscription.course.title, subscription.course %>
+          <% else %>
+            <%= link_to subscription.course.title, subscription.course, :class=> "td-completed" %>
+          <% end %>
+        </td>
+        <td>
+          <% if subscription.member.active == true %>
+            <%= link_to subscription.member.name, subscription.member %>
+          <% else %>
+            <%= link_to subscription.member.name, subscription.member, :class=> "td-completed" %>
+          <% end %>
+        </td>
+        <td>
+          <% if subscription.rating != nil %> 
+            <div class="star-ratings-sprite"><span style="width:<%= subscription.rating * 20%>%" class="star-ratings-sprite-rating"></span></div> 
+          <% end %>
+        </td>
+        <td><description><%= subscription.comment %></description></td>
+        <td><%= l(subscription.updated_at, format: :short) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>New Courses</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Topic</th>
+      <th>Course type</th>
+      <th>Credits</th>
+      <th>University</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @newcourses.each do |course| %>
+      <tr>
+        <td><%= link_to course.title, course_path(course) %></td>
+        <td><%= course.topic.name %></td>
+        <td><%= course.course_type %></td>
+        <td><%= course.credits %></td>
+        <td><%= course.university %></td>
+        <td><%= l(course.created_at, format: :short) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>New Members</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Title</th>
+      <th>Stream</th>
+      <th>Manager</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @members.each do |member| %>
+      <tr>
+        <td><%= link_to member.name, member_path(member) %></td>
+        <td><%= member.title %> <% if (member.is_lead?) %> <strong>(Lead)</strong> <% end %> </td>
+        <td><%= member.stream %></td>
+        <td><%= member.manager %></td>
+        <td><%= l(member.created_at, format: :short) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

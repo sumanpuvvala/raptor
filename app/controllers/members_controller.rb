@@ -81,6 +81,13 @@ class MembersController < ApplicationController
     redirect_to @member
   end
 
+  # GET /members/dashboard
+  def dashboard
+    @newratings = Subscription.completion().where("rating is not null").includes(:course, :member).order("updated_at DESC").limit(5)
+    @newcourses = Course.active().includes(:topic, :member).order("created_at DESC").limit(5)
+    @members = Member.active().order("created_at DESC").limit(5)
+  end
+
   # GET /members/new
   def new
     @member = Member.new

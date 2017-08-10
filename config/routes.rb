@@ -25,7 +25,8 @@ Rails.application.routes.draw do
   get 'help', to: :help, controller: 'members'
   get 'program', to: :program, controller: 'members'
   get 'faq', to: :faq, controller: 'members'
-  get 'app', to: :faq, controller: 'members'
+  get 'app', to: :app, controller: 'members'
+  get 'dashboard', to: :dashboard, controller: 'members'
 
-  root 'members#index'
+  root 'members#dashboard'
 end
