@@ -48,7 +48,7 @@ class CoursesController < ApplicationController
     end 
    
     @subscriptions.each do |m| 
-      if m.due != nil && m.due < Date.today()
+      if m.due != nil && m.due < Date.today() && m.status != 'Completed' && m.status != 'Certified'
         m.overdue = true
       end
     end

@@ -122,7 +122,9 @@
             <%= link_to subscription.member.name, subscription.member, :class=> "td-completed" %>
           <% end %>
         </td>
-        <td><%= subscription.status %></td>
+        <td <% if (subscription.status == 'Completed' or subscription.status == 'Certified') %> class="td-completed" <% end %> >
+          <%= subscription.status %>
+        </td>
         <td <% if (subscription.overdue == true) %> class="td-overdue" <% end %> >
           <% if subscription.due != nil %>
             <%= l(subscription.due, format: :short) %>
