@@ -87,6 +87,7 @@ class CoursesController < ApplicationController
   # POST /courses.json
   def create
     @course = Course.new(course_params)
+    @course.active = true
 
     respond_to do |format|
       logger.debug 'Saving Course ' + @course.title + ": #{@course.valid?}"

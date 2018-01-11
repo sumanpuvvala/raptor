@@ -29,6 +29,7 @@ class CategoriesController < ApplicationController
   # POST /categories.json
   def create
     @category = Category.new(category_params)
+    @category.active = true
 
     respond_to do |format|
       if @category.save!
