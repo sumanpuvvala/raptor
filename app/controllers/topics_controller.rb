@@ -71,6 +71,7 @@ layout 'standard'
   # POST /topics.json
   def create
     @topic = Topic.new(topic_params)
+    @topic.active = true
 
     respond_to do |format|
       if @topic.save!

@@ -29,6 +29,7 @@ class ClassificationsController < ApplicationController
   # POST /classifications.json
   def create
     @classification = Classification.new(classification_params)
+    @classification.active = true
 
     respond_to do |format|
       if @classification.save!

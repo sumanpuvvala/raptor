@@ -47,6 +47,7 @@ class TeamsController < ApplicationController
   # POST /teams.json
   def create
     @team = Team.new(team_params)
+    @team.active = true
 
     respond_to do |format|
       if @team.save
