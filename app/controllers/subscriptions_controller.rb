@@ -12,16 +12,19 @@ class SubscriptionsController < ApplicationController
     @courses = Course.active().order(:title)
     @members = Member.active().order(:name)
     @statuses = NamedList.where(list_name: 'status').select(:entry_name).order(:entry_name)
+    @programs = NamedList.where(list_name: 'program').select(:entry_name).order(:entry_name)
 
     @course_id = params[:course_id]
     @member_id = params[:member_id]
 #    @member_id = cookies[:member_id]
 
     @status = params[:status]
+    @program = params[:program]
 
     @subscriptions = @subscriptions.member(@member_id) if @member_id.present?
     @subscriptions = @subscriptions.course(@course_id) if params[:course_id].present?
     @subscriptions = @subscriptions.status(@status) if params[:status].present?
+    @subscriptions = @subscriptions.program(@program) if params[:program].present?
     @subscriptions = @subscriptions.includes(:member, :course)
   end
 
@@ -33,6 +36,7 @@ class SubscriptionsController < ApplicationController
   # GET /subscriptions/new
   def new
     @subscription = Subscription.new
+    @subscription.program = 'Default' 
 
     if params[:course_id] != nil
       @subscription.course_id = params[:course_id] 
@@ -54,6 +58,7 @@ class SubscriptionsController < ApplicationController
     end
     
     @statuses = NamedList.where(list_name: 'status').select(:entry_name).order(:entry_name)
+    @programs = NamedList.where(list_name: 'program').select(:entry_name).order(:entry_name)
   end
 
   # GET /subscriptions/1/edit
@@ -61,12 +66,17 @@ class SubscriptionsController < ApplicationController
     @course = Course.find(@subscription.course_id)
     @member = Member.find(@subscription.member_id) 
     @statuses = NamedList.where(list_name: 'status').select(:entry_name).order(:entry_name)
+    @programs = NamedList.where(list_name: 'program').select(:entry_name).order(:entry_name)
   end
 
   # POST /subscriptions
   # POST /subscriptions.json
   def create
     @subscription = Subscription.new(subscription_params)
+
+    if params[:program] = nil
+      @subscription.program = 'Default'
+    end
 
     if @subscription.course.course_type == 'Training'
       @course_links = CourseLink.where(course_id: @subscription.course.id)
@@ -130,7 +140,7 @@ class SubscriptionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def subscription_params
-      params.require(:subscription).permit(:course_id, :member_id, :status, :rating, :comment, :due)
+      params.require(:subscription).permit(:course_id, :member_id, :status, :rating, :comment, :due, :program)
     end
 
 end

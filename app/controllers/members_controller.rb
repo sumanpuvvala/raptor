@@ -8,11 +8,13 @@ class MembersController < ApplicationController
   # GET /members.json
   def index
     @streams = NamedList.where(list_name: 'stream').select(:entry_name).order(:entry_name)
+    @programs = NamedList.where(list_name: 'program').select(:entry_name).order(:entry_name)
     @managers = Member.active().select(:manager).distinct().order(:manager)
     @titles = Member.active().select(:title).distinct().order(:title)
     
     @member_name = params[:member_name]
     @stream = params[:stream]
+    @program = params[:program]
     @title = params[:title]
     @manager = params[:manager]
 
@@ -24,14 +26,15 @@ class MembersController < ApplicationController
 #    @members = @members.has_subscribed() if params[:has_subscribed].present?
     @members = @members.order(:name)
 
-    @subscriptions = Subscription.subscription()
-    @subscriptions = @subscriptions.joins(:course, :member).group(:member_id).sum(:credits)
+    @subscriptions = Subscription.subscription().joins(:course, :member)
+    @subscriptions = @subscriptions.program(@program) if params[:program].present?
 
-    @completed_subscriptions = Subscription.completion()
-    @completed_subscriptions = @completed_subscriptions.joins(:course, :member).group(:member_id).sum(:credits)
+    @completed_subscriptions = @subscriptions.completion()
+    @inprogress_subscriptions = @subscriptions.inprogress()
 
-    @inprogress_subscriptions = Subscription.inprogress()
-    @inprogress_subscriptions = @inprogress_subscriptions.joins(:course, :member).group(:member_id).sum(:credits)
+    @subscriptions = @subscriptions.group(:member_id).sum(:credits)
+    @completed_subscriptions = @completed_subscriptions.group(:member_id).sum(:credits)
+    @inprogress_subscriptions = @inprogress_subscriptions.group(:member_id).sum(:credits)
 
     @members.each do |m| 
       m.credits = @subscriptions[m.id]
@@ -49,20 +52,22 @@ class MembersController < ApplicationController
 
     @courses = Course.active().where(member_id: params[:id]).includes(:topic).order(:title) 
     @interests = Interest.where(member_id: params[:id]).includes(:topic)
+    @programs = NamedList.where(list_name: 'program').select(:entry_name).order("id DESC")
+
     @subscriptions = Subscription.where(member_id: params[:id]).includes(:course).order("status DESC", :due)
-    @completed_subscriptions = @subscriptions.completion()
-    @incomplete_subscriptions = @subscriptions.incomplete()
 
-    @total_credits = @subscriptions.joins(:course).sum(:credits)
-    @completed_credits = @completed_subscriptions.joins(:course).sum(:credits)
-
-    @incomplete_subscriptions.each do |m| 
-      if m.due != nil && m.due < Date.today()
+    @subscriptions.each do |m| 
+      m.credits = m.course.credits.present? ? m.course.credits : 0;
+      if m.status == "Completed" or m.status == "Certified"
+        m.complete = true
+      elsif m.status == "Exempted" or m.status == "Dropped"
+        m.ignore = true
+      elsif m.due != nil && m.due < Date.today()
         m.overdue = true
       end
     end
 
-  end
+ end
 
   def mark
 

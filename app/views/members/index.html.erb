@@ -14,6 +14,10 @@
       <label for="stream">Title</label> 
       <%= collection_select(nil, :title, @titles, :title, :title, selected: @title, include_blank: true) %></p>
     </div> 
+    <div class="field">
+      <label for="program">Program</label> 
+      <%= collection_select(nil, :program, @programs, :entry_name, :entry_name, selected: @program, include_blank: true) %></p>
+    </div> 
   </div>
   <div style="width: 50%; float:right">
     <div class="field">
