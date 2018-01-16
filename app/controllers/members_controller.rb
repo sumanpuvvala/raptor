@@ -26,15 +26,15 @@ class MembersController < ApplicationController
 #    @members = @members.has_subscribed() if params[:has_subscribed].present?
     @members = @members.order(:name)
 
-    @subscriptions = Subscription.subscription()
+    @subscriptions = Subscription.subscription().joins(:course, :member)
     @subscriptions = @subscriptions.program(@program) if params[:program].present?
-    @subscriptions = @subscriptions.joins(:course, :member).group(:member_id).sum(:credits)
 
-    @completed_subscriptions = Subscription.completion()
-    @completed_subscriptions = @completed_subscriptions.joins(:course, :member).group(:member_id).sum(:credits)
+    @completed_subscriptions = @subscriptions.completion()
+    @inprogress_subscriptions = @subscriptions.inprogress()
 
-    @inprogress_subscriptions = Subscription.inprogress()
-    @inprogress_subscriptions = @inprogress_subscriptions.joins(:course, :member).group(:member_id).sum(:credits)
+    @subscriptions = @subscriptions.group(:member_id).sum(:credits)
+    @completed_subscriptions = @completed_subscriptions.group(:member_id).sum(:credits)
+    @inprogress_subscriptions = @inprogress_subscriptions.group(:member_id).sum(:credits)
 
     @members.each do |m| 
       m.credits = @subscriptions[m.id]
