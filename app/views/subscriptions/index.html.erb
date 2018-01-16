@@ -21,10 +21,14 @@
       <label for="course_type">Status</label> 
       <%= collection_select(nil, :status, @statuses, :entry_name, :entry_name, selected: @status, include_blank: true) %>
     </div> 
-  <%= submit_tag "Search" %>
-  <%= link_to 'Clear', subscriptions_path %>
+    <div class="field">
+      <label for="program">Program</label> 
+      <%= collection_select(nil, :program, @programs, :entry_name, :entry_name, selected: @program, include_blank: true) %>
+    </div> 
   </div>
 </div>
+  <%= submit_tag "Search" %>
+  <%= link_to 'Clear', subscriptions_path %>
 <% end %> 
 
 <table>
@@ -34,6 +38,7 @@
       <th>Course</th>
       <th>Credits</th>
       <th>Status</th>
+      <th>Program</th>
       <th>Rating</th>
       <th>Comment</th>
       <th colspan="1"></th>
@@ -47,6 +52,7 @@
         <td><%= link_to subscription.course.title, subscription.course %></td>
         <td><%= subscription.course.credits %></td>
         <td><%= subscription.status %></td>
+        <td><%= subscription.program %></td>
         <td><%= subscription.rating %></td>
         <td><%= subscription.comment %></td>
         <td><%= link_to 'Edit', edit_subscription_path(subscription) %></td>

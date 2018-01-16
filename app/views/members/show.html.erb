@@ -30,40 +30,53 @@
   <%= link_to 'This is Me', mark_member_path(@member), :class => "btn-blue" %>
 <% end %>
 
-<h2>Subscriptions (<%= @completed_credits %> / <%= @total_credits %> credits)</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Course</th>
-      <th>Credits</th>
-      <th>Due Date</th>
-      <th>Status</th>
-      <th>Comment</th>
-      <th></th>
-    </tr>
-  </thead>
+<% @programs.each do |program| %>
+  <% @program_subscriptions = @subscriptions.select { |subscription| subscription.program == program.entry_name } %>
+  <% if @program_subscriptions.count() > 0 %>
+    <% @completed_points = @program_subscriptions.select { |subscription| subscription.complete == true }.map(&:credits).sum.round %>
+    <% @total_points = @program_subscriptions.select { |subscription| subscription.ignore != true }.map(&:credits).sum.round %>
+    <h2>Program: <%= program.entry_name %> (<%= @completed_points %> completed of <%= @total_points %>) </h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Course</th>
+          <th>Status</th>
+          <th>Due</th>
+          <th>Rating</th>
+          <th>Comment</th>
+          <th>Credits</th>
+          <th></th>
+        </tr>
+      </thead>
 
-  <tbody>
-    <% @incomplete_subscriptions.each do |subscription| %>
-      <tr>
-        <td><%= link_to subscription.course.title, subscription.course %></td>
-        <td><%= subscription.course.credits %></td>
-        <td <% if (subscription.overdue == true) %> class="td-overdue" <% end %> >
-          <% if subscription.due != nil %>
-            <%= l(subscription.due, format: :short) %>
+      <tbody>
+        <% @program_subscriptions.each do |subscription| %>
+          <% if subscription.program == program.entry_name %>
+            <tr>
+              <td><%= link_to subscription.course.title, subscription.course %></td>
+              <td <% if (subscription.complete == true) %> class="td-completed" <% end %> > 
+                <%= subscription.status %>
+              </td>
+              <td <% if (subscription.overdue == true) %> class="td-overdue" <% end %> >
+                <% if subscription.due != nil and subscription.complete != true and subscription.ignore != true %> <%= l(subscription.due, format: :short) %> <% end %>
+              </td>
+              <td>
+                <% if subscription.rating != nil and subscription.complete == true %> 
+                  <div class="star-ratings-sprite"><span style="width:<%= subscription.rating * 20%>%" class="star-ratings-sprite-rating"></span></div> 
+                <% end %>
+              </td>
+              <td><description><%= subscription.comment %></description></td>
+              <td><%= subscription.credits %></td>
+              <% if cookies[:member_id].to_s == @member.id.to_s or (@current_member != nil and @current_member.is_lead) %>
+                <td><%= link_to 'Edit', edit_subscription_path(subscription) %></td> 
+              <% end %>
+            </tr>
           <% end %>
-        </td>
-        <td <% if (subscription.status == "Completed" or subscription.status == "Exempted") %> class="td-completed" <% end %> > 
-          <%= subscription.status %>
-        </td>
-        <td><description><%= subscription.comment %></description></td>
-        <% if cookies[:member_id].to_s == @member.id.to_s or (@current_member != nil and @current_member.is_lead) %>
-          <td><%= link_to 'Edit', edit_subscription_path(subscription) %></td> 
         <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      </tbody>
+    </table>
+  <% end %>
+<% end %>
 
 <h2>Teams</h2>
 <% if @teammembers.present? %>
@@ -82,39 +95,6 @@
         <td><%= link_to interest.topic.name, interest.topic %></td> 
         <% if cookies[:member_id].to_s == @member.id.to_s or (@current_member != nil and @current_member.is_lead) %>
           <td><%= button_to 'Remove', {:controller => :interests, action: :destroy, id: interest.id},  onclick: 'return confirm("Are you sure?")', :method => :delete%></td>
-        <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-<% end %>
-
-<h2>Completed Courses</h2>
-<% if @completed_subscriptions.present? %>
-<table>
-  <thead>
-    <tr>
-      <th>Course</th>
-      <th>Credits</th>
-      <th>Comment</th>
-      <th></th>
-      <th colspan="2"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @completed_subscriptions.each do |subscription| %>
-      <tr>
-        <td><%= link_to subscription.course.title, subscription.course %></td>
-        <td><%= subscription.course.credits %></td>
-        <td><description><%= subscription.comment %></description></td>
-        <td>
-          <% if subscription.rating != nil %> 
-            <div class="star-ratings-sprite"><span style="width:<%= subscription.rating * 20%>%" class="star-ratings-sprite-rating"></span></div> 
-          <% end %>
-        </td>
-        <% if cookies[:member_id].to_s == @member.id.to_s or (@current_member != nil and @current_member.is_lead) %>
-          <td><%= link_to 'Edit', edit_subscription_path(subscription) %></td> 
         <% end %>
       </tr>
     <% end %>

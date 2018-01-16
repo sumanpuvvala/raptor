@@ -10,20 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170628170337) do
+ActiveRecord::Schema.define(version: 20180111133517) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.boolean  "active",     default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean  "active"
   end
 
   create_table "classifications", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.boolean  "active",     default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean  "active"
   end
 
   create_table "course_links", force: :cascade do |t|
@@ -47,9 +47,9 @@ ActiveRecord::Schema.define(version: 20170628170337) do
     t.decimal  "credits",            precision: 10, scale: 2
     t.string   "university"
     t.string   "url"
-    t.datetime "created_at",                                                 null: false
-    t.datetime "updated_at",                                                 null: false
-    t.boolean  "active",                                      default: true
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.boolean  "active"
   end
 
   create_table "interests", force: :cascade do |t|
@@ -65,9 +65,9 @@ ActiveRecord::Schema.define(version: 20170628170337) do
     t.string   "stream"
     t.string   "manager"
     t.boolean  "is_lead"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.boolean  "active",     default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean  "active"
     t.string   "jid"
   end
 
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 20170628170337) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.date     "due"
+    t.string   "program"
   end
 
   create_table "teammembers", force: :cascade do |t|
@@ -100,9 +101,9 @@ ActiveRecord::Schema.define(version: 20170628170337) do
     t.string   "name"
     t.integer  "member_id"
     t.string   "purpose"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.boolean  "active",     default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean  "active"
   end
 
   create_table "topics", force: :cascade do |t|
@@ -111,9 +112,9 @@ ActiveRecord::Schema.define(version: 20170628170337) do
     t.integer  "classification_id"
     t.integer  "team_id"
     t.text     "details"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-    t.boolean  "active",            default: true
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.boolean  "active"
   end
 
   create_table "urls", force: :cascade do |t|
